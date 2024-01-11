@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import bcrypt from "bcryptjs"
+// import bcrypt from "bcryptjs"
 
 const userSchema = new mongoose.Schema(
   {
@@ -22,31 +22,31 @@ const userSchema = new mongoose.Schema(
   }
 )
 
-userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password)
-}
+// userSchema.methods.matchPassword = async function (enteredPassword) {
+//   return await bcrypt.compare(enteredPassword, this.password)
+// }
 
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    next()
-  }
+// userSchema.pre("save", async function (next) {
+//   if (!this.isModified("password")) {
+//     next()
+//   }
 
-  const salt = await bcrypt.genSalt(10)
-  this.password = await bcrypt.hash(this.password, salt)
-})
+//   const salt = await bcrypt.genSalt(10)
+//   this.password = await bcrypt.hash(this.password, salt)
+// })
 
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("resetPassword")) {
-    next()
-  }
+// userSchema.pre("save", async function (next) {
+//   if (!this.isModified("resetPassword")) {
+//     next()
+//   }
 
-  const salt = await bcrypt.genSalt(10)
-  this.resetPassword = await bcrypt.hash(this.resetPassword, salt)
-})
+//   const salt = await bcrypt.genSalt(10)
+//   this.resetPassword = await bcrypt.hash(this.resetPassword, salt)
+// })
 
-userSchema.methods.matchCode = async function (enteredCode) {
-  return await bcrypt.compare(enteredCode, this.resetPassword)
-}
+// userSchema.methods.matchCode = async function (enteredCode) {
+//   return await bcrypt.compare(enteredCode, this.resetPassword)
+// }
 const User = mongoose.model("User", userSchema)
 
 export default User
