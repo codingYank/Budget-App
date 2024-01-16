@@ -16,6 +16,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    totalAvailable: {
+      type: Number,
+      required: true,
+    },
+    uncategorized: {
+      type: Number,
+      required: true,
+    },
   },
   {
     timestamps: true,
