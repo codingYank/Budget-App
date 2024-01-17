@@ -43,11 +43,16 @@ const addTransaction = asyncHandler(async (req, res) => {
     throw new Error("Category not found")
   }
 
-  if ((value < 0 && Math.abs(value) <= cat.total) || value > 0) {
+  if (value !== 0) {
     cat.total = Number(cat.total) + Number(value)
     await cat.save()
-    user.totalAvailable = Number(user.totalAvailable) + Number(value)
-    await user.save()
+    if (value < 0) {
+      user.totalAvailable = Number(user.totalAvailable) + Number(value)
+      await user.save()
+    } else if (value > 0) {
+      user.uncategorized = Number(user.uncategorized) - Number(value)
+      await user.save()
+    }
     const transaction = await Transaction.create({
       name,
       value,
@@ -56,7 +61,7 @@ const addTransaction = asyncHandler(async (req, res) => {
     })
     res.status(200).json(transaction)
   } else {
-    throw new Error("Not enough funds")
+    throw new Error("Enter value for transaction")
   }
 })
 
