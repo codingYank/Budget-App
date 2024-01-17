@@ -28,3 +28,7 @@ const paycheckSchema = new mongoose.Schema({
     },
   ],
 })
+
+const Paycheck = mongoose.model("Paycheck", paycheckSchema)
+
+export default Paycheck

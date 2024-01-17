@@ -3,7 +3,7 @@ import Category from "../models/category.js"
 import User from "../models/user.js"
 
 const getUserCategories = asyncHandler(async (req, res) => {
-  const categories = Category.find({ user: req.user._id })
+  const categories = await Category.find({ user: req.user._id })
 
   if (categories) {
     res.status(200).json(categories)

@@ -41,6 +41,8 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
+    totalAvailable: 0,
+    uncategorized: 0,
   })
 
   if (user) {

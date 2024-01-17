@@ -5,6 +5,7 @@ dotenv.config()
 import connectDB from "./config/db.js"
 import userRoutes from "./routes/userRoutes.js"
 import categoryRoutes from "./routes/categoryRoutes.js"
+import transactionRoutes from "./routes/transactionRoutes.js"
 import { errorHandler } from "./middleware/errorMiddleware.js"
 const port = process.env.PORT || 5000
 
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/users", userRoutes)
 app.use("/api/categories", categoryRoutes)
+app.use("/api/transactions", transactionRoutes)
 
 app.use(errorHandler)
 
