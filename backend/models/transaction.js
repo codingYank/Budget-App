@@ -20,6 +20,10 @@ const transactionSchema = new mongoose.Schema(
       required: true,
       ref: "User",
     },
+    paycheck: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Paycheck",
+    },
   },
   {
     timestamps: true,

@@ -9,7 +9,6 @@ const getTransactions = asyncHandler(async (req, res) => {
   const transactions = await Transaction.find({ user: req.user._id }).populate(
     "category"
   )
-
   if (transactions) {
     res.status(200).json(transactions)
   } else {
@@ -79,6 +78,12 @@ const addPaycheck = asyncHandler(async (req, res) => {
   console.log(totalDeposit)
   const uncategorized = value - totalDeposit
   if (totalDeposit <= value) {
+    const paycheck = await Paycheck.create({
+      name,
+      value,
+      user: user._id,
+      categories,
+    })
     categories.forEach(async (category) => {
       if (category.depositAmount > 0) {
         const cat = await Category.findById(category.category)
@@ -90,18 +95,13 @@ const addPaycheck = asyncHandler(async (req, res) => {
           value: category.depositAmount,
           category: cat._id,
           user: user._id,
+          paycheck,
         })
       }
     })
     user.totalAvailable = Number(user.totalAvailable) + Number(newValue)
     user.uncategorized = Number(user.uncategorized) + Number(uncategorized)
     await user.save()
-    const paycheck = await Paycheck.create({
-      name,
-      value,
-      user: user._id,
-      categories,
-    })
     if (paycheck) {
       res.status(200).json(paycheck)
     } else {
@@ -112,4 +112,23 @@ const addPaycheck = asyncHandler(async (req, res) => {
   }
 })
 
-export { getTransactions, getCategoryTransactions, addTransaction, addPaycheck }
+const getPaychecks = asyncHandler(async (req, res) => {
+  const paychecks = await Paycheck.find({ user: req.user._id }).populate(
+    "categories.category"
+  )
+
+  if (paychecks) {
+    res.status(200).json(paychecks)
+  } else {
+    res.status(404)
+    throw new Error("Paychecks not found")
+  }
+})
+
+export {
+  getTransactions,
+  getCategoryTransactions,
+  addTransaction,
+  addPaycheck,
+  getPaychecks,
+}
