@@ -17,6 +17,22 @@ const getTransactions = asyncHandler(async (req, res) => {
   }
 })
 
+//get last 10 user transactions
+const getRecentTransactions = asyncHandler(async (req, res) => {
+  const transactions = await Transaction.find({
+    user: req.user._id,
+    paycheck: null,
+  })
+    .limit(10)
+    .populate("category")
+  if (transactions) {
+    res.status(200).json(transactions)
+  } else {
+    res.status(404)
+    throw new Error("Transactions not found")
+  }
+})
+
 //get category transactions
 const getCategoryTransactions = asyncHandler(async (req, res) => {
   const transactions = await Transaction.find({
@@ -126,6 +142,7 @@ const getPaychecks = asyncHandler(async (req, res) => {
 
 export {
   getTransactions,
+  getRecentTransactions,
   getCategoryTransactions,
   addTransaction,
   addPaycheck,
