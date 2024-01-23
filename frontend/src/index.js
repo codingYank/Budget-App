@@ -12,11 +12,16 @@ import reportWebVitals from "./reportWebVitals"
 import DashboardScreen from "./screens/DashboardScreen"
 import { Provider } from "react-redux"
 import store from "./store"
+import LoginScreen from "./screens/LoginScreen"
+import PrivateRoute from "./components/PrivateRoute"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route index={true} path="/" element={<DashboardScreen />} />
+      <Route path="/login" element={<LoginScreen />} />
+      <Route path="" element={<PrivateRoute />}>
+        <Route index={true} path="/" element={<DashboardScreen />} />
+      </Route>
     </Route>
   )
 )

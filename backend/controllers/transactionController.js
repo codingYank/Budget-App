@@ -72,7 +72,6 @@ const addPaycheck = asyncHandler(async (req, res) => {
   console.log(req.body)
   let totalDeposit = 0
   categories.forEach((category) => {
-    console.log(typeof category.depositAmount)
     totalDeposit = Number(category.depositAmount) + Number(totalDeposit)
   })
   console.log(totalDeposit)
