@@ -12,12 +12,14 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
           pageNumber,
         },
       }),
+      keepUnusedDataFor: 5,
     }),
     getRecentTransactions: builder.query({
       query: () => ({
         url: `${TRANSACTIONS_URL}/recent`,
         method: "GET",
       }),
+      keepUnusedDataFor: 5,
     }),
   }),
 })

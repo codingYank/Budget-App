@@ -15,12 +15,9 @@ const categorySchema = new mongoose.Schema(
       required: true,
       ref: "User",
     },
-    transactions: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Transaction",
-      },
-    ],
+    color: {
+      type: String,
+    },
   },
   {
     timestamps: true,
