@@ -22,9 +22,7 @@ const DashboardScreen = () => {
     console.log(`red: ${r}, green: ${g}, blue: ${b}`)
   }
 
-  console.log(categories)
-  console.log(recentTransactions)
-  console.log(user)
+
   return (
     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <input type='color' onChange={(e) => printColor(e)}></input>
@@ -45,9 +43,14 @@ const DashboardScreen = () => {
       {categoriesLoading ? (<Loader />) : categoriesError ? (
         <div>Category Error</div>
       ) : (
-        categories.map(category => (
-          <CategoryCard category={category} />
-        ))
+        <div style={{textAlign: 'center'}}>
+          <h1>Categories</h1>
+          <div style={{display: 'flex', gap: '15px', flexWrap: 'wrap'}}>
+            {categories.map(category => (
+              <CategoryCard key={category._id} category={category} />
+            ))}
+          </div>
+        </div>
       )}
       {recentTransactionsLoading ? (<Loader />) : recentTransactionsError ? (
         <div>Recent Transactions Error</div>
