@@ -4,6 +4,7 @@ import { useGetRecentTransactionsQuery } from '../slices/transactionsApiSlice'
 import { useGetUserQuery } from '../slices/usersApiSlice'
 import Loader from '../components/Loader'
 import CategoryCard from '../components/CategoryCard'
+import '../styles/table.css'
 
 const DashboardScreen = () => {
 
@@ -13,11 +14,20 @@ const DashboardScreen = () => {
 
   const {data:user, isLoading:userLoading, error: userError} = useGetUserQuery()
 
+  const printColor = (e) => {
+    const color = e.target.value
+    const r = parseInt(color.substr(1,2), 16)
+    const g = parseInt(color.substr(3,2), 16)
+    const b = parseInt(color.substr(5,2), 16)
+    console.log(`red: ${r}, green: ${g}, blue: ${b}`)
+  }
+
   console.log(categories)
   console.log(recentTransactions)
   console.log(user)
   return (
-    <div>
+    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+      <input type='color' onChange={(e) => printColor(e)}></input>
       {userLoading ? (<Loader />) : userError ? (
         <div>User Error</div>
       ) : (
@@ -42,28 +52,29 @@ const DashboardScreen = () => {
       {recentTransactionsLoading ? (<Loader />) : recentTransactionsError ? (
         <div>Recent Transactions Error</div>
       ) : (
-        <>
-          <table>
+        <div style={{textAlign: 'center'}}>
+          <h1>Recent Transactions</h1>
+          <table className='table'>
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Category</th>
-                <th>Name</th>
-                <th>Amount</th>
+                <th className='th'>Date</th>
+                <th className='th'>Category</th>
+                <th className='th'>Name</th>
+                <th className='th'>Amount</th>
               </tr>
             </thead>
             {recentTransactions.map(transaction => (
-              <tbody key={transaction._id}>
+              <tbody key={transaction._id} style={{backgroundColor: `rgba(${transaction.category.color},.3)`}} className='table-row'>
                 <tr>
-                  <td>{new Date(transaction.createdAt).toLocaleDateString()}</td>
-                  <td>{transaction.category.name}</td>
-                  <td>{transaction.name}</td>
-                  <td>${transaction.value}</td>
+                  <td className='th'>{new Date(transaction.createdAt).toLocaleDateString()}</td>
+                  <td className='th'>{transaction.category.name}</td>
+                  <td className='th'>{transaction.name}</td>
+                  <td className='th'>${transaction.value}</td>
                 </tr>
               </tbody>
             ))}
           </table>
-        </>
+        </div>
       )}
     </div>
   )
