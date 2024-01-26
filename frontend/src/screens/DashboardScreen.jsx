@@ -1,12 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useGetCategoriesQuery } from '../slices/categoriesApiSlice'
 import { useGetRecentTransactionsQuery } from '../slices/transactionsApiSlice'
 import { useGetUserQuery } from '../slices/usersApiSlice'
 import Loader from '../components/Loader'
 import CategoryCard from '../components/CategoryCard'
 import '../styles/table.css'
+import AddCategory from '../components/AddCategory'
 
 const DashboardScreen = () => {
+  const [showAddCategory, setShowAddCategory] = useState(false)
+
+  const addCategory = () => {
+    setShowAddCategory(true)
+  }
 
   const {data:categories, isLoading: categoriesLoading, error: categoriesError} = useGetCategoriesQuery()
 
@@ -25,18 +31,21 @@ const DashboardScreen = () => {
 
   return (
     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-      <input type='color' onChange={(e) => printColor(e)}></input>
+      {showAddCategory ? (
+        <AddCategory show={setShowAddCategory} />
+      ) : null}
+      {/* <input type='color' onChange={(e) => printColor(e)}></input> */}
       {userLoading ? (<Loader />) : userError ? (
         <div>User Error</div>
       ) : (
         <div>
           <div>
             <h1>Total</h1>
-            <h3>${user.totalAvailable}</h3>
+            <h3>${Number(user.totalAvailable).toLocaleString('en', {useGrouping:true})}</h3>
           </div>
           <div>
             <h2>Uncategorized</h2>
-            <h4>${user.uncategorized}</h4>
+            <h4>${Number(user.uncategorized).toLocaleString('en', {useGrouping:true})}</h4>
           </div>
         </div>
       )}
@@ -44,7 +53,10 @@ const DashboardScreen = () => {
         <div>Category Error</div>
       ) : (
         <div style={{textAlign: 'center'}}>
-          <h1>Categories</h1>
+          <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
+            <h1>Categories</h1>
+            <button type='button' onClick={addCategory}>New +</button>
+          </div>
           <div style={{display: 'flex', gap: '15px', flexWrap: 'wrap'}}>
             {categories.map(category => (
               <CategoryCard key={category._id} category={category} />
@@ -72,7 +84,7 @@ const DashboardScreen = () => {
                   <td className='th'>{new Date(transaction.createdAt).toLocaleDateString()}</td>
                   <td className='th'>{transaction.category.name}</td>
                   <td className='th'>{transaction.name}</td>
-                  <td className='th'>${transaction.value}</td>
+                  <td className='th'>${Number(transaction.value).toLocaleString('en', {useGrouping:true})}</td>
                 </tr>
               </tbody>
             ))}

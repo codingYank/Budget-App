@@ -1,0 +1,18 @@
+.modal-screen {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 99;
+  width: 100vw;
+  height: 100vh;
+  background-color: hsla(0, 0%, 0%, .7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 15px;
+
+}
