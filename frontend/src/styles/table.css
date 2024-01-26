@@ -2,11 +2,14 @@
   border-collapse: collapse;
   width: 85vw;
   margin-bottom: 20px;
+  background-color: white;
+  border-radius: 10px;
 }
 
 .th, .td {
   border-bottom: 1px solid black;
   opacity: 1;
   text-align: center;
+  font-weight: bold;
 }
 

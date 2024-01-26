@@ -1,0 +1,13 @@
+.primary-btn {
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  padding: .5rem 2rem;
+  font-weight: bold;
+  background-color: hsl(135, 100%, 33%);
+}
+
+.primary-btn:hover {
+  background-color: hsl(135, 100%, 38%);
+}

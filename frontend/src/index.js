@@ -14,6 +14,7 @@ import { Provider } from "react-redux"
 import store from "./store"
 import LoginScreen from "./screens/LoginScreen"
 import PrivateRoute from "./components/PrivateRoute"
+import CategoryScreen from "./screens/CategoryScreen"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
       <Route path="/login" element={<LoginScreen />} />
       <Route path="" element={<PrivateRoute />}>
         <Route index={true} path="/" element={<DashboardScreen />} />
+        <Route path="category/:id" element={<CategoryScreen />} />
       </Route>
     </Route>
   )

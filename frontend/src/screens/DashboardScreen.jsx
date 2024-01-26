@@ -5,6 +5,7 @@ import { useGetUserQuery } from '../slices/usersApiSlice'
 import Loader from '../components/Loader'
 import CategoryCard from '../components/CategoryCard'
 import '../styles/table.css'
+import '../styles/button.css'
 import AddCategory from '../components/AddCategory'
 
 const DashboardScreen = () => {
@@ -55,9 +56,9 @@ const DashboardScreen = () => {
         <div style={{textAlign: 'center'}}>
           <div style={{display: 'flex', justifyContent: 'center', gap: '20px', alignItems: 'center'}}>
             <h1>Categories</h1>
-            <button type='button' onClick={addCategory}>New +</button>
+            <button className='primary-btn' type='button' onClick={addCategory}>New +</button>
           </div>
-          <div style={{display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap', maxWidth: '700px'}}>
+          <div style={{display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap', maxWidth: '900px'}}>
             {categories.map(category => (
               <CategoryCard key={category._id} category={category} />
             ))}
@@ -79,12 +80,12 @@ const DashboardScreen = () => {
               </tr>
             </thead>
             {recentTransactions.map(transaction => (
-              <tbody key={transaction._id} style={{backgroundColor: `rgba(${transaction.category.color},.3)`}} className='table-row'>
+              <tbody key={transaction._id} style={{backgroundColor: `rgba(${transaction.category.color},.6)`}} className='table-row'>
                 <tr>
-                  <td className='th'>{new Date(transaction.createdAt).toLocaleDateString()}</td>
-                  <td className='th'>{transaction.category.name}</td>
-                  <td className='th'>{transaction.name}</td>
-                  <td className='th'>${Number(transaction.value).toLocaleString('en', {useGrouping:true})}</td>
+                  <td className='td'>{new Date(transaction.createdAt).toLocaleDateString()}</td>
+                  <td className='td'>{transaction.category.name}</td>
+                  <td className='td'>{transaction.name}</td>
+                  <td className='td'>${Number(transaction.value).toLocaleString('en', {useGrouping:true})}</td>
                 </tr>
               </tbody>
             ))}
