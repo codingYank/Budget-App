@@ -14,7 +14,7 @@ const getUserCategories = asyncHandler(async (req, res) => {
 })
 
 const createCategory = asyncHandler(async (req, res) => {
-  const { name, total } = req.body
+  const { name, total, color } = req.body
   const user = await User.findById(req.user._id)
   const categoryExists = await Category.findOne({ user, name })
 
@@ -32,6 +32,7 @@ const createCategory = asyncHandler(async (req, res) => {
   const category = await Category.create({
     name,
     total,
+    color,
     user: user._id,
   })
 

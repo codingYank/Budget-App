@@ -14,11 +14,11 @@ const DashboardScreen = () => {
     setShowAddCategory(true)
   }
 
-  const {data:categories, isLoading: categoriesLoading, error: categoriesError} = useGetCategoriesQuery()
+  const {data:categories, refetch:refetchCategories, isLoading: categoriesLoading, error: categoriesError} = useGetCategoriesQuery()
 
   const {data:recentTransactions, isLoading:recentTransactionsLoading, error:recentTransactionsError}= useGetRecentTransactionsQuery()
 
-  const {data:user, isLoading:userLoading, error: userError} = useGetUserQuery()
+  const {data:user, refetch:refetchUser, isLoading:userLoading, error: userError} = useGetUserQuery()
 
   const printColor = (e) => {
     const color = e.target.value
@@ -32,7 +32,7 @@ const DashboardScreen = () => {
   return (
     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       {showAddCategory ? (
-        <AddCategory show={setShowAddCategory} />
+        <AddCategory show={setShowAddCategory} refetchCategories={refetchCategories} refetchUser={refetchUser} />
       ) : null}
       {/* <input type='color' onChange={(e) => printColor(e)}></input> */}
       {userLoading ? (<Loader />) : userError ? (
@@ -53,11 +53,11 @@ const DashboardScreen = () => {
         <div>Category Error</div>
       ) : (
         <div style={{textAlign: 'center'}}>
-          <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
+          <div style={{display: 'flex', justifyContent: 'center', gap: '20px', alignItems: 'center'}}>
             <h1>Categories</h1>
             <button type='button' onClick={addCategory}>New +</button>
           </div>
-          <div style={{display: 'flex', gap: '15px', flexWrap: 'wrap'}}>
+          <div style={{display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap', maxWidth: '700px'}}>
             {categories.map(category => (
               <CategoryCard key={category._id} category={category} />
             ))}

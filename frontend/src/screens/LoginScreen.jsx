@@ -42,7 +42,7 @@ const LoginScreen = () => {
           <Field id='email' type='email' name='email' />
           <label htmlFor='password'>Password</label>
           <Field type='password' id='password' name='password' />
-          <button type='submit'>Login</button>
+          <button type='submit' disabled={isLoading}>Login</button>
         </Form>
       </Formik>
     </div>
