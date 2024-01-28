@@ -21,8 +21,17 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
     }),
+    getCategoryTransactions: builder.query({
+      query: (id) => ({
+        url: `${TRANSACTIONS_URL}/${id}`,
+      }),
+      keepUnusedDataFor: 5,
+    }),
   }),
 })
 
-export const { useGetTransactionsQuery, useGetRecentTransactionsQuery } =
-  transactionsApiSlice
+export const {
+  useGetTransactionsQuery,
+  useGetRecentTransactionsQuery,
+  useGetCategoryTransactionsQuery,
+} = transactionsApiSlice

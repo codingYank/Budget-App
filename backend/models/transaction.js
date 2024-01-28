@@ -24,6 +24,18 @@ const transactionSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Paycheck",
     },
+    categoryTotal: {
+      type: Number,
+      required: true,
+    },
+    userTotal: {
+      type: Number,
+      required: true,
+    },
+    date: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

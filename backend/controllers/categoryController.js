@@ -44,4 +44,29 @@ const createCategory = asyncHandler(async (req, res) => {
   }
 })
 
-export { getUserCategories, createCategory }
+const getCategoryById = asyncHandler(async (req, res) => {
+  console.log(req.params)
+  const category = await Category.findById(req.params.id)
+
+  if (category) {
+    res.status(200).json(category)
+  } else {
+    throw new Error("Category not found")
+  }
+})
+
+const updateCategory = asyncHandler(async (req, res) => {
+  const category = await Category.findById(req.params._id)
+
+  if (category) {
+    category.name = req.body.name || category.name
+    category.color = req.body.color || category.color
+    const updatedCategory = await category.save()
+
+    res.status(200).json(updatedCategory)
+  } else {
+    throw new Error("Category not found")
+  }
+})
+
+export { getUserCategories, createCategory, getCategoryById, updateCategory }
