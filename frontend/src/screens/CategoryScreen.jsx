@@ -1,19 +1,32 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useAsyncError, useParams } from 'react-router-dom'
 import { useGetCategoryByIdQuery } from '../slices/categoriesApiSlice'
 import Loader from '../components/Loader'
 import { useGetCategoryTransactionsQuery } from '../slices/transactionsApiSlice'
 import '../styles/button.css'
+import AddTransaction from '../components/AddTransaction'
 
 const CategoryScreen = () => {
   const { id } = useParams()
+
+  const [showAddTransaction, setShowAddTransaction] = useState(false)
+
+  const onAddTransaction = () => {
+    setShowAddTransaction(true)
+  }
+
+  const [showCategoryIncrease, setShowCategoryIncrease] = useState(false)
   
   const {data:category, isLoading:categoryLoading, refetch:refetchCategories, error:categoryError} = useGetCategoryByIdQuery(id)
 
   const {data:transactions, isLoading:transactionsLoading, refetch: refetchTransactions, error:transactionsError} = useGetCategoryTransactionsQuery(id)
 
+
   return (
     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+      {showAddTransaction ? (
+        <AddTransaction show={setShowAddTransaction} refetchTrans={refetchTransactions} refetchCat={refetchCategories} category={id} />
+      ) : null }
       {categoryLoading ? (<Loader />) : categoryError ? (<div>Category Error</div>) : (
         <div>
           <h1>{category.name}</h1>
@@ -29,7 +42,7 @@ const CategoryScreen = () => {
         <div style={{textAlign: 'center'}}>
           <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             <h1>Transactions</h1>
-            <button type='button'>+</button>
+            <button type='button' onClick={onAddTransaction}>+</button>
           </div>
           <table className='table'>
             <thead>
@@ -40,8 +53,8 @@ const CategoryScreen = () => {
                 <th className='th'>Amount</th>
               </tr>
             </thead>
-            {transactions.map(transaction => (
-              <tbody key={transaction._id} style={{backgroundColor: `rgba(${category.color},.6)`}} className='table-row'>
+            {transactions.map((transaction, index ) => (
+              <tbody key={transaction._id}  style={index % 2 === 0 ? ({backgroundColor: `rgba(${category.color},.6)`}) : ({backgroundColor: `rgba(${category.color},.4)`})} className='table-row'>
                 <tr>
                   <td className='td'>{new Date(transaction.createdAt).toLocaleDateString()}</td>
                   <td className='td'>{transaction.category.name}</td>
@@ -51,6 +64,7 @@ const CategoryScreen = () => {
               </tbody>
             ))}
           </table>
+          <h1>*Fix Table Order!!!!!!!!!!!!!!!!!!!!!!!!*</h1>
         </div>
       )}
     </div>

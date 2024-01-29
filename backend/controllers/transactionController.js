@@ -49,7 +49,7 @@ const getCategoryTransactions = asyncHandler(async (req, res) => {
 
 //add transaction
 const addTransaction = asyncHandler(async (req, res) => {
-  const { name, value, category } = req.body
+  const { name, value, category, date } = req.body
   const cat = await Category.findById(category)
   const user = await User.findById(req.user._id)
 
@@ -57,6 +57,10 @@ const addTransaction = asyncHandler(async (req, res) => {
     throw new Error("User not found")
   } else if (!cat) {
     throw new Error("Category not found")
+  }
+
+  if (Number(cat.total) + Number(value) < 0) {
+    throw new Error("Insufficiant funds")
   }
 
   if (value !== 0) {
@@ -73,7 +77,10 @@ const addTransaction = asyncHandler(async (req, res) => {
       name,
       value,
       category,
+      date,
       user: user._id,
+      categoryTotal: cat.total,
+      userTotal: user.totalAvailable,
     })
     res.status(200).json(transaction)
   } else {
@@ -111,6 +118,8 @@ const addPaycheck = asyncHandler(async (req, res) => {
           category: cat._id,
           user: user._id,
           paycheck,
+          categoryTotal: cat.total,
+          userTotal: user.totalAvailable + value,
         })
       }
     })
