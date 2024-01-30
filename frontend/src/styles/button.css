@@ -11,3 +11,16 @@
 .primary-btn:hover {
   background-color: hsl(135, 100%, 38%);
 }
+
+.invisable-btn {
+  background-color: hsla(0, 0%, 0%, 0.1);
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: .3rem .5rem;
+  cursor: pointer;
+}
+
+.invisable-btn:hover {
+  background-color: hsla(0, 0%, 0%, 0.2);
+
+}

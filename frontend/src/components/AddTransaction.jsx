@@ -4,12 +4,13 @@ import { useParams } from 'react-router-dom'
 import { useCreateTransactionMutation } from '../slices/transactionsApiSlice'
 import { toast } from 'react-toastify'
 
-const AddTransaction = ({show, refetchTrans, refetchCat, category}) => {
+const AddTransaction = ({show, refetchTrans, refetchCat, refetchUser, category}) => {
   const close = () => {
     show(false)
   }
 
   const [createTransaction, {isLoading}] = useCreateTransactionMutation()
+  console.log(category)
 
   const onSubmit = async (e) => {
     try {
@@ -21,6 +22,9 @@ const AddTransaction = ({show, refetchTrans, refetchCat, category}) => {
       }).unwrap()
       refetchCat()
       refetchTrans()
+      if (refetchUser) {
+        refetchUser()
+      }
       close()
     } catch (err) {
       console.log(err)

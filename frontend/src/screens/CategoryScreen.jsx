@@ -64,7 +64,7 @@ const CategoryScreen = () => {
               </tbody>
             ))}
           </table>
-          <h1>*Fix Table Order!!!!!!!!!!!!!!!!!!!!!!!!*</h1>
+          <h1>*Fix Table Order and dates!!!!!!!!!!!!!!!!!!!!!!!!*</h1>
         </div>
       )}
     </div>

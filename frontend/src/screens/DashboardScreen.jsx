@@ -7,9 +7,11 @@ import CategoryCard from '../components/CategoryCard'
 import '../styles/table.css'
 import '../styles/button.css'
 import AddCategory from '../components/AddCategory'
+import AddTransaction from '../components/AddTransaction'
 
 const DashboardScreen = () => {
   const [showAddCategory, setShowAddCategory] = useState(false)
+  const [showAddTransaction, setShowAddTransaction] = useState(false)
 
   const addCategory = () => {
     setShowAddCategory(true)
@@ -17,16 +19,17 @@ const DashboardScreen = () => {
 
   const {data:categories, refetch:refetchCategories, isLoading: categoriesLoading, error: categoriesError} = useGetCategoriesQuery()
 
-  const {data:recentTransactions, isLoading:recentTransactionsLoading, error:recentTransactionsError}= useGetRecentTransactionsQuery()
+  const {data:recentTransactions, 
+    refetch: refetchRecentTransactions,
+    isLoading:recentTransactionsLoading, error:recentTransactionsError}= useGetRecentTransactionsQuery()
 
   const {data:user, refetch:refetchUser, isLoading:userLoading, error: userError} = useGetUserQuery()
 
-  const printColor = (e) => {
-    const color = e.target.value
-    const r = parseInt(color.substr(1,2), 16)
-    const g = parseInt(color.substr(3,2), 16)
-    const b = parseInt(color.substr(5,2), 16)
-    console.log(`red: ${r}, green: ${g}, blue: ${b}`)
+  const [categoryToAddTrans, setCategoryToAddTrans] = useState()
+  const onAddTransaction = (e, id) => {
+    e.preventDefault()
+    setCategoryToAddTrans(id)
+    setShowAddTransaction(true)
   }
 
 
@@ -35,6 +38,9 @@ const DashboardScreen = () => {
       {showAddCategory ? (
         <AddCategory show={setShowAddCategory} refetchCategories={refetchCategories} refetchUser={refetchUser} />
       ) : null}
+      {showAddTransaction ? (
+        <AddTransaction show={setShowAddTransaction} refetchTrans={refetchRecentTransactions} refetchCat={refetchCategories} refetchUser={refetchUser} category={categoryToAddTrans} />
+      ) : null }
       {/* <input type='color' onChange={(e) => printColor(e)}></input> */}
       {userLoading ? (<Loader />) : userError ? (
         <div>User Error</div>
@@ -60,7 +66,7 @@ const DashboardScreen = () => {
           </div>
           <div style={{display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap', maxWidth: '900px'}}>
             {categories.map(category => (
-              <CategoryCard key={category._id} category={category} />
+              <CategoryCard key={category._id} category={category} onAddTransaction={onAddTransaction} />
             ))}
           </div>
         </div>
@@ -90,6 +96,7 @@ const DashboardScreen = () => {
               </tbody>
             ))}
           </table>
+          <h1>*Fix table order and dates!!*</h1>
         </div>
       )}
     </div>
