@@ -8,13 +8,26 @@ import '../styles/table.css'
 import '../styles/button.css'
 import AddCategory from '../components/AddCategory'
 import AddTransaction from '../components/AddTransaction'
+import AddPaycheck from '../components/AddPaycheck'
 
 const DashboardScreen = () => {
   const [showAddCategory, setShowAddCategory] = useState(false)
   const [showAddTransaction, setShowAddTransaction] = useState(false)
+  const [showAddPaycheck, setShowAddPaycheck] = useState(false)
 
   const addCategory = () => {
     setShowAddCategory(true)
+  }
+  
+  const [categoryToAddTrans, setCategoryToAddTrans] = useState()
+  const onAddTransaction = (e, id) => {
+    e.preventDefault()
+    setCategoryToAddTrans(id)
+    setShowAddTransaction(true)
+  }
+
+  const onAddPaycheck = () => {
+    setShowAddPaycheck(true)
   }
 
   const {data:categories, refetch:refetchCategories, isLoading: categoriesLoading, error: categoriesError} = useGetCategoriesQuery()
@@ -25,30 +38,32 @@ const DashboardScreen = () => {
 
   const {data:user, refetch:refetchUser, isLoading:userLoading, error: userError} = useGetUserQuery()
 
-  const [categoryToAddTrans, setCategoryToAddTrans] = useState()
-  const onAddTransaction = (e, id) => {
-    e.preventDefault()
-    setCategoryToAddTrans(id)
-    setShowAddTransaction(true)
-  }
 
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center' }} className={showAddCategory ? 'freeze' : null}>
+    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center' }} className={showAddCategory || showAddPaycheck ? 'freeze' : null}>
       {showAddCategory ? (
         <AddCategory show={setShowAddCategory} refetchCategories={refetchCategories} refetchUser={refetchUser} />
       ) : null}
       {showAddTransaction ? (
         <AddTransaction show={setShowAddTransaction} refetchTrans={refetchRecentTransactions} refetchCat={refetchCategories} refetchUser={refetchUser} category={categoryToAddTrans} />
       ) : null }
+      {showAddPaycheck ? (
+        <AddPaycheck show={setShowAddPaycheck} refetchCategories={refetchCategories} refetchUser={refetchUser} categories={categories} />
+      ) : (null)}
       {/* <input type='color' onChange={(e) => printColor(e)}></input> */}
       {userLoading ? (<Loader />) : userError ? (
         <div>User Error</div>
       ) : (
         <div>
           <div>
-            <h1>Total</h1>
-            <h3>${Number(user.totalAvailable).toLocaleString('en', {useGrouping:true})}</h3>
+            <div>
+              <h1>Total</h1>
+              <h3>${Number(user.totalAvailable).toLocaleString('en', {useGrouping:true})}</h3>
+            </div>
+            <div>
+              <button className='primary-btn' type='button' onClick={onAddPaycheck}>Add Paycheck</button>
+            </div>
           </div>
           <div>
             <h2>Uncategorized</h2>
