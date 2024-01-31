@@ -10,7 +10,7 @@ const categoryCard = ({category, onAddTransaction}) => {
       <div key={category._id} className='card' style={{borderColor: `rgb(${category.color})`, backgroundColor: `rgba(${category.color},.4)`}}>
         <div>
           <h3>{category.name}</h3>
-          <button type='button' onClick={(e) => onAddTransaction(e, category._id)} className='invisable-btn'>+</button>      
+          <button type='button' onClick={(e) => onAddTransaction(e, category._id)} className='clear-btn'>+</button>      
         </div>
         <h4>${Number(category.total).toLocaleString('en', {useGrouping:true})}</h4>
       </div>

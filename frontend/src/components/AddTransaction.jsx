@@ -41,17 +41,23 @@ const AddTransaction = ({show, refetchTrans, refetchCat, refetchUser, category})
   return (
     <div className='modal-screen'>
       <div className='modal-content'>
-        <button type='button' onClick={close}>X</button>
+        <button type='button' onClick={close} className='invisable-btn'>X</button>
         <h1>Add Transaction</h1>
         <Formik initialValues={initData} onSubmit={onSubmit}>
-          <Form>
-            <label htmlFor='name'>Name</label>
-            <Field id='name' name='name' />
-            <label htmlFor="value">Amount</label>
-            <Field id='value' name='value' type='number' />
-            <label htmlFor='date'>Date</label>
-            <Field id='date' name='date' type='date' />
-            <button type='submit'>Add</button>
+          <Form className='form'>
+            <div className='form-content'>
+              <label htmlFor='name'>Name</label>
+              <Field id='name' name='name' />
+            </div>
+            <div className='form-content'>
+              <label htmlFor="value">Amount</label>
+              <Field id='value' name='value' type='number' />
+            </div>
+            <div className='form-content'>
+              <label htmlFor='date'>Date</label>
+              <Field id='date' name='date' type='date' />
+            </div>
+            <button className='primary-btn' type='submit'>Add</button>
           </Form>
         </Formik>
       </div>

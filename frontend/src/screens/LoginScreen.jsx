@@ -37,12 +37,16 @@ const LoginScreen = () => {
   return (
     <div>
       <Formik onSubmit={onSubmit} initialValues={{email: '', password: ''}}>
-        <Form >
-          <label htmlFor='email'>Email</label>
-          <Field id='email' type='email' name='email' />
-          <label htmlFor='password'>Password</label>
-          <Field type='password' id='password' name='password' />
-          <button type='submit' disabled={isLoading}>Login</button>
+        <Form  className='form'>
+          <div className='form-content'>
+            <label htmlFor='email'>Email</label>
+            <Field id='email' type='email' name='email' />
+          </div>
+          <div className='form-content'>
+            <label htmlFor='password'>Password</label>
+            <Field type='password' id='password' name='password' />
+          </div>
+          <button className='primary-btn' type='submit' disabled={isLoading}>Login</button>
         </Form>
       </Formik>
     </div>

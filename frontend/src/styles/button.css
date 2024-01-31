@@ -12,7 +12,7 @@
   background-color: hsl(135, 100%, 38%);
 }
 
-.invisable-btn {
+.clear-btn {
   background-color: hsla(0, 0%, 0%, 0.1);
   border: 1px solid black;
   border-radius: 5px;
@@ -20,7 +20,13 @@
   cursor: pointer;
 }
 
-.invisable-btn:hover {
+.clear-btn:hover {
   background-color: hsla(0, 0%, 0%, 0.2);
+}
 
+.invisable-btn {
+  background-color: hsla(0, 0%, 0%, 0);
+  border: none;
+  outline: none;
+  align-self: end;
 }
