@@ -29,4 +29,5 @@
   border: none;
   outline: none;
   align-self: end;
+  cursor: pointer;
 }
