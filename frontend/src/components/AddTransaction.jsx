@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { useCreateTransactionMutation } from '../slices/transactionsApiSlice'
 import { toast } from 'react-toastify'
 
-const AddTransaction = ({show, refetchTrans, refetchCat, refetchUser, category}) => {
+const AddTransaction = ({show, refetchTrans, refetchCat, refetchUser, category, addToCat}) => {
   const close = () => {
     show(false)
   }
@@ -13,22 +13,42 @@ const AddTransaction = ({show, refetchTrans, refetchCat, refetchUser, category})
   console.log(category)
 
   const onSubmit = async (e) => {
-    try {
-      await createTransaction({
-        name: e.name,
-        value: Number(e.value) * -1,
-        date: e.date,
-        category
-      }).unwrap()
-      refetchCat()
-      refetchTrans()
-      if (refetchUser) {
-        refetchUser()
+    if (addToCat) {
+      try {
+        await createTransaction({
+          name: e.name,
+          value: Number(e.value),
+          date: e.date,
+          category
+        }).unwrap()
+        refetchCat()
+        refetchTrans()
+        if (refetchUser) {
+          refetchUser()
+        }
+        close()
+      } catch (err) {
+        console.log(err)
+        toast.error(err?.data?.message || err.error)
       }
-      close()
-    } catch (err) {
-      console.log(err)
-      toast.error(err?.data?.message || err.error)
+    } else {
+      try {
+        await createTransaction({
+          name: e.name,
+          value: Number(e.value) * -1,
+          date: e.date,
+          category
+        }).unwrap()
+        refetchCat()
+        refetchTrans()
+        if (refetchUser) {
+          refetchUser()
+        }
+        close()
+      } catch (err) {
+        console.log(err)
+        toast.error(err?.data?.message || err.error)
+      }
     }
   }
 

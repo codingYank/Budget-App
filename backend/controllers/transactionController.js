@@ -3,12 +3,13 @@ import Category from "../models/category.js"
 import Paycheck from "../models/paycheck.js"
 import Transaction from "../models/transaction.js"
 import User from "../models/user.js"
+import moment from "moment"
 
 //get all user transactions
 const getTransactions = asyncHandler(async (req, res) => {
-  const transactions = await Transaction.find({ user: req.user._id }).populate(
-    "category"
-  )
+  const transactions = await Transaction.find({ user: req.user._id })
+    .populate("category")
+    .sort("-date -createdAt")
   if (transactions) {
     res.status(200).json(transactions)
   } else {
@@ -25,6 +26,7 @@ const getRecentTransactions = asyncHandler(async (req, res) => {
   })
     .limit(10)
     .populate("category")
+    .sort("-date -createdAt")
   if (transactions) {
     res.status(200).json(transactions)
   } else {
@@ -37,7 +39,9 @@ const getRecentTransactions = asyncHandler(async (req, res) => {
 const getCategoryTransactions = asyncHandler(async (req, res) => {
   const transactions = await Transaction.find({
     category: req.params.category,
-  }).populate("category")
+  })
+    .populate("category")
+    .sort("-date -createdAt")
 
   if (transactions) {
     res.status(200).json(transactions)

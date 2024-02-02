@@ -121,7 +121,7 @@ const DashboardScreen = () => {
             {recentTransactions.map(transaction => (
               <tbody key={transaction._id} style={{backgroundColor: `rgba(${transaction.category.color},.6)`}} className='table-row'>
                 <tr>
-                  <td className='td'>{new Date(transaction.createdAt).toLocaleDateString()}</td>
+                  <td className='td'>{new Date(transaction.date).getUTCMonth() + 1}/{new Date(transaction.date).getUTCDate()}/{new Date(transaction.date).getUTCFullYear()}</td>
                   <td className='td'>{transaction.category.name}</td>
                   <td className='td'>{transaction.name}</td>
                   <td className='td'>${Number(transaction.value).toLocaleString('en', {useGrouping:true})}</td>

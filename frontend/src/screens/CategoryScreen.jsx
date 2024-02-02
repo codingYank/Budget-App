@@ -10,9 +10,15 @@ const CategoryScreen = () => {
   const { id } = useParams()
 
   const [showAddTransaction, setShowAddTransaction] = useState(false)
+  const [showAddTransactionToCat, setShowAddTransactionToCat] = useState(false)
+
 
   const onAddTransaction = () => {
     setShowAddTransaction(true)
+  }
+
+  const onAddTransactionToCat = () => {
+    setShowAddTransactionToCat(true)
   }
 
   const [showCategoryIncrease, setShowCategoryIncrease] = useState(false)
@@ -27,22 +33,25 @@ const CategoryScreen = () => {
       {showAddTransaction ? (
         <AddTransaction show={setShowAddTransaction} refetchTrans={refetchTransactions} refetchCat={refetchCategories} category={id} />
       ) : null }
+      {showAddTransactionToCat ? (
+        <AddTransaction show={setShowAddTransactionToCat} refetchTrans={refetchTransactions} refetchCat={refetchCategories} category={id} addToCat={true} />
+      ) : null }
       {categoryLoading ? (<Loader />) : categoryError ? (<div>Category Error</div>) : (
-        <div>
-          <h1>{category.name}</h1>
-          <div style={{display: 'flex', alignItems: 'center'}}>
+        <div style={{display: 'flex', alignItems: 'center', gap: '20px'}}>
+          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            <h1>{category.name}</h1>
             <h3>${Number(category.total).toLocaleString('en', {useGrouping:true})}</h3>
-            <button type='button' >+</button>
           </div>
+          <button className='primary-btn' type='button' onClick={onAddTransactionToCat} >+</button>
         </div> 
       )}
       {transactionsLoading || categoryLoading ? (<Loader />) : transactionsError || categoryError ? (
         <div>Transactions Error</div>
       ) : (
         <div style={{textAlign: 'center'}}>
-          <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
             <h1>Transactions</h1>
-            <button type='button' onClick={onAddTransaction}>+</button>
+            <button className='primary-btn' type='button' onClick={onAddTransaction}>Add Transaction</button>
           </div>
           <table className='table'>
             <thead>
@@ -56,7 +65,7 @@ const CategoryScreen = () => {
             {transactions.map((transaction, index ) => (
               <tbody key={transaction._id}  style={index % 2 === 0 ? ({backgroundColor: `rgba(${category.color},.6)`}) : ({backgroundColor: `rgba(${category.color},.4)`})} className='table-row'>
                 <tr>
-                  <td className='td'>{new Date(transaction.createdAt).toLocaleDateString()}</td>
+                  <td className='td'>{new Date(transaction.date).getUTCMonth() + 1}/{new Date(transaction.date).getUTCDate()}/{new Date(transaction.date).getUTCFullYear()}</td>
                   <td className='td'>{transaction.category.name}</td>
                   <td className='td'>{transaction.name}</td>
                   <td className='td'>${Number(transaction.value).toLocaleString('en', {useGrouping:true})}</td>

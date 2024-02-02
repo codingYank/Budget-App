@@ -6,6 +6,7 @@ import Transaction from "./models/transaction.js"
 import users from "./data/user.js"
 import categories from "./data/categories.js"
 import transactions from "./data/transactions.js"
+import Paycheck from "./models/paycheck.js"
 
 dotenv.config()
 
@@ -47,6 +48,7 @@ const destroyData = async () => {
     await User.deleteMany()
     await Category.deleteMany()
     await Transaction.deleteMany()
+    await Paycheck.deleteMany()
 
     console.log("Data Destroyed")
     process.exit()
