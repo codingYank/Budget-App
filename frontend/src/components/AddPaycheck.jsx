@@ -1,15 +1,20 @@
 import { Field, FieldArray, Form, Formik } from 'formik'
 import React, { useState } from 'react'
+import { useCreatePaycheckMutation } from '../slices/transactionsApiSlice'
+import { toast } from 'react-toastify'
 
 const AddPaycheck = ({ show, refetchCategories, refetchUser, categories }) => {
   const [uncategorized, setUncategorized] = useState(0)
+
   const close = () => {
     show(false)
   }
 
+  const [createPaycheck, {isLoading}] = useCreatePaycheckMutation()
+
   const categoryIds = categories.map(category => (
     {
-      id: category._id,
+      category: category._id,
       name: category.name,
       depositAmount: 0,
     }
@@ -21,8 +26,16 @@ const AddPaycheck = ({ show, refetchCategories, refetchUser, categories }) => {
     categories: categoryIds
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     console.log(e)
+    try {
+      await createPaycheck(e).unwrap()
+      refetchCategories()
+      refetchUser()
+      close()
+    } catch (err) {
+      toast.error(err?.data?.message || err.error)
+    }
   }
 
   const onChange = (e) => {
@@ -59,9 +72,9 @@ const AddPaycheck = ({ show, refetchCategories, refetchUser, categories }) => {
                 <>
                 {initValues.categories.length > 0 && 
                   initValues.categories.map((category, index) => (
-                    <div className='form-content' key={category.id}>
-                      <label htmlFor={category.id}>{category.name}</label>
-                      <Field name={`categories.${index}.depositAmount`} id={category.id} type='number' />
+                    <div className='form-content' key={category.category}>
+                      <label htmlFor={category.category}>{category.name}</label>
+                      <Field name={`categories.${index}.depositAmount`} id={category.category} type='number' />
                     </div>
                   ))}
                 </>

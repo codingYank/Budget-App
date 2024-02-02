@@ -34,6 +34,13 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    createPaycheck: builder.mutation({
+      query: (data) => ({
+        url: `${TRANSACTIONS_URL}/paycheck`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 })
 
@@ -42,4 +49,5 @@ export const {
   useGetRecentTransactionsQuery,
   useGetCategoryTransactionsQuery,
   useCreateTransactionMutation,
+  useCreatePaycheckMutation,
 } = transactionsApiSlice

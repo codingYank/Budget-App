@@ -15,11 +15,13 @@ import store from "./store"
 import LoginScreen from "./screens/LoginScreen"
 import PrivateRoute from "./components/PrivateRoute"
 import CategoryScreen from "./screens/CategoryScreen"
+import RegisterScreen from "./screens/RegisterScreen"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="/login" element={<LoginScreen />} />
+      <Route path="/register" element={<RegisterScreen />} />
       <Route path="" element={<PrivateRoute />}>
         <Route index={true} path="/" element={<DashboardScreen />} />
         <Route path="category/:id" element={<CategoryScreen />} />

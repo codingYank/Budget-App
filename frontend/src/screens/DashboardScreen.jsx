@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useGetCategoriesQuery } from '../slices/categoriesApiSlice'
 import { useGetRecentTransactionsQuery } from '../slices/transactionsApiSlice'
-import { useGetUserQuery } from '../slices/usersApiSlice'
+import { useGetUserQuery, useLogoutMutation } from '../slices/usersApiSlice'
 import Loader from '../components/Loader'
 import CategoryCard from '../components/CategoryCard'
 import '../styles/table.css'
@@ -9,6 +9,10 @@ import '../styles/button.css'
 import AddCategory from '../components/AddCategory'
 import AddTransaction from '../components/AddTransaction'
 import AddPaycheck from '../components/AddPaycheck'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { logout } from '../slices/authSlice'
+import { toast } from 'react-toastify'
 
 const DashboardScreen = () => {
   const [showAddCategory, setShowAddCategory] = useState(false)
@@ -38,6 +42,20 @@ const DashboardScreen = () => {
 
   const {data:user, refetch:refetchUser, isLoading:userLoading, error: userError} = useGetUserQuery()
 
+  const [logoutApiCall] = useLogoutMutation()
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const logoutHandler = async () => {
+    try {
+      await logoutApiCall().unwrap()
+      dispatch(logout())
+      navigate('/login')
+    } catch (err) {
+      toast.error(err?.data?.message || err.error)
+    }
+  }
 
 
   return (
@@ -114,6 +132,7 @@ const DashboardScreen = () => {
           <h1>*Fix table order and dates!!*</h1>
         </div>
       )}
+      <button onClick={logoutHandler}>Logout</button>
     </div>
   )
 }

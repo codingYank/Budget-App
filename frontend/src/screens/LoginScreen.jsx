@@ -1,7 +1,7 @@
 import { Field, Form, Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useLoginMutation } from '../slices/usersApiSlice'
 import { setCredentials } from '../slices/authSlice'
 import { toast } from 'react-toastify'
@@ -47,6 +47,7 @@ const LoginScreen = () => {
             <Field type='password' id='password' name='password' />
           </div>
           <button className='primary-btn' type='submit' disabled={isLoading}>Login</button>
+          <Link to={'/register'}>Register</Link>  
         </Form>
       </Formik>
     </div>

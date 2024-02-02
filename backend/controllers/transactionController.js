@@ -113,13 +113,14 @@ const addPaycheck = asyncHandler(async (req, res) => {
         await cat.save()
         newValue = Number(value) - Number(category.depositAmount)
         await Transaction.create({
-          name,
+          name: `Paycheck ${name}`,
           value: category.depositAmount,
           category: cat._id,
           user: user._id,
           paycheck,
           categoryTotal: cat.total,
           userTotal: user.totalAvailable + value,
+          date: new Date(),
         })
       }
     })
