@@ -10,7 +10,6 @@ const AddTransaction = ({show, refetchTrans, refetchCat, refetchUser, category, 
   }
 
   const [createTransaction, {isLoading}] = useCreateTransactionMutation()
-  console.log(category)
 
   const onSubmit = async (e) => {
     if (addToCat) {
@@ -57,7 +56,6 @@ const AddTransaction = ({show, refetchTrans, refetchCat, refetchUser, category, 
     value: 0,
     date: new Date().toISOString().split('T')[0]
   }
-  console.log(new Date().toLocaleDateString())
   return (
     <div className='modal-screen'>
       <div className='modal-content'>

@@ -5,6 +5,7 @@ import Loader from '../components/Loader'
 import { useGetCategoryTransactionsQuery } from '../slices/transactionsApiSlice'
 import '../styles/button.css'
 import AddTransaction from '../components/AddTransaction'
+import { FiEdit2, FiPlus } from "react-icons/fi";
 
 const CategoryScreen = () => {
   const { id } = useParams()
@@ -37,12 +38,15 @@ const CategoryScreen = () => {
         <AddTransaction show={setShowAddTransactionToCat} refetchTrans={refetchTransactions} refetchCat={refetchCategories} category={id} addToCat={true} />
       ) : null }
       {categoryLoading ? (<Loader />) : categoryError ? (<div>Category Error</div>) : (
-        <div style={{display: 'flex', alignItems: 'center', gap: '20px'}}>
-          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px'}}>
+          <div style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
             <h1>{category.name}</h1>
-            <h3>${Number(category.total).toLocaleString('en', {useGrouping:true})}</h3>
+            <button type='button' className='icon-btn'><FiEdit2 /></button>
           </div>
-          <button className='primary-btn' type='button' onClick={onAddTransactionToCat} >+</button>
+          <div style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
+            <h2>${Number(category.total).toLocaleString('en', {useGrouping:true})}</h2>
+            <button className='icon-btn' type='button' onClick={onAddTransactionToCat} ><FiPlus /></button>
+          </div>
         </div> 
       )}
       {transactionsLoading || categoryLoading ? (<Loader />) : transactionsError || categoryError ? (
@@ -63,7 +67,7 @@ const CategoryScreen = () => {
               </tr>
             </thead>
             {transactions.map((transaction, index ) => (
-              <tbody key={transaction._id}  style={index % 2 === 0 ? ({backgroundColor: `rgba(${category.color},.6)`}) : ({backgroundColor: `rgba(${category.color},.4)`})} className='table-row'>
+              <tbody key={transaction._id}  style={index % 2 === 0 ? ({backgroundColor: `${category.color}4d`}) : ({backgroundColor: `${category.color}30`})} className='table-row'>
                 <tr>
                   <td className='td'>{new Date(transaction.date).getUTCMonth() + 1}/{new Date(transaction.date).getUTCDate()}/{new Date(transaction.date).getUTCFullYear()}</td>
                   <td className='td'>{transaction.category.name}</td>

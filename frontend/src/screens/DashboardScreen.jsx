@@ -73,20 +73,20 @@ const DashboardScreen = () => {
       {userLoading ? (<Loader />) : userError ? (
         <div>User Error</div>
       ) : (
-        <div>
-          <div>
-            <div>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '15px'}}>
+          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'hsl(135, 100%, 32%)', height: '250px', width: '250px', borderRadius: '9999px', marginTop: '15px', color: 'white'}}>
+            <div style={{textAlign: 'center'}}>
               <h1>Total</h1>
               <h3>${Number(user.totalAvailable).toLocaleString('en', {useGrouping:true})}</h3>
             </div>
-            <div>
-              <button className='primary-btn' type='button' onClick={onAddPaycheck}>Add Paycheck</button>
+            <div style={{textAlign: 'center'}}>
+              <h2>Uncategorized</h2>
+              <h4>${Number(user.uncategorized).toLocaleString('en', {useGrouping:true})}</h4>
             </div>
           </div>
-          <div>
-            <h2>Uncategorized</h2>
-            <h4>${Number(user.uncategorized).toLocaleString('en', {useGrouping:true})}</h4>
-          </div>
+  
+              <button className='primary-btn' type='button' onClick={onAddPaycheck}>Add Paycheck</button>
+            
         </div>
       )}
       {categoriesLoading ? (<Loader />) : categoriesError ? (
@@ -119,7 +119,7 @@ const DashboardScreen = () => {
               </tr>
             </thead>
             {recentTransactions.map(transaction => (
-              <tbody key={transaction._id} style={{backgroundColor: `rgba(${transaction.category.color},.6)`}} className='table-row'>
+              <tbody key={transaction._id} style={{backgroundColor: `${transaction.category.color}40`}} className='table-row'>
                 <tr>
                   <td className='td'>{new Date(transaction.date).getUTCMonth() + 1}/{new Date(transaction.date).getUTCDate()}/{new Date(transaction.date).getUTCFullYear()}</td>
                   <td className='td'>{transaction.category.name}</td>
@@ -129,10 +129,9 @@ const DashboardScreen = () => {
               </tbody>
             ))}
           </table>
-          <h1>*Fix table order and dates!!*</h1>
         </div>
       )}
-      <button onClick={logoutHandler}>Logout</button>
+      <button className='danger-btn' onClick={logoutHandler}>Logout</button>
     </div>
   )
 }

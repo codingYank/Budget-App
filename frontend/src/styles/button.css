@@ -2,21 +2,44 @@
   border-radius: 10px;
   outline: none;
   cursor: pointer;
-  border: none;
+  border: 2px solid hsl(135, 100%, 32%);
+  color: hsl(135, 100%, 32%);
+  font-size: 15px;
   padding: .5rem 2rem;
   font-weight: bold;
-  background-color: hsl(135, 100%, 33%);
+  background-color: white;
 }
 
 .primary-btn:hover {
-  background-color: hsl(135, 100%, 38%);
+  color: hsl(135, 100%, 38%);
+  border-color: hsl(135, 100%, 38%);
+  background-color: hsl(135, 100%, 95%);
+}
+
+.danger-btn {
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  border: 2px solid hsl(0, 74%, 44%);
+  color: hsl(0, 74%, 44%);
+  font-size: 15px;
+  padding: .5rem 2rem;
+  font-weight: bold;
+  background-color: white;
+}
+
+.danger-btn:hover {
+  color: hsl(0, 74%, 54%);
+  border-color: hsl(0, 74%, 54%);
+  background-color: hsl(0, 74%, 95%);
 }
 
 .clear-btn {
   background-color: hsla(0, 0%, 0%, 0.1);
   border: 1px solid black;
   border-radius: 5px;
-  padding: .3rem .5rem;
+  padding: 5px 5px 0 5px;
+  font-size: 20px;
   cursor: pointer;
 }
 
@@ -29,5 +52,14 @@
   border: none;
   outline: none;
   align-self: end;
+  cursor: pointer;
+}
+
+.icon-btn {
+  background-color: hsla(0, 0%, 0%, 0);
+  border: 1px solid black;
+  border-radius: 8px;
+  padding: 5px 5px 0 5px;
+  font-size: 20px;
   cursor: pointer;
 }

@@ -19,15 +19,15 @@ const AddCategory = ({show, refetchCategories, refetchUser}) => {
   const [createCategory , {isLoading}] = useCreateCategoryMutation()
 
   const onSubmit = async (e) => {
-    console.log(e)
-    const color = e.color
-    const r = parseInt(color.substr(1,2), 16)
-    const g = parseInt(color.substr(3,2), 16)
-    const b = parseInt(color.substr(5,2), 16)
-    const rgb = `${r},${g},${b}`
+    // console.log(e)
+    // const color = e.color
+    // const r = parseInt(color.substr(1,2), 16)
+    // const g = parseInt(color.substr(3,2), 16)
+    // const b = parseInt(color.substr(5,2), 16)
+    // const rgb = `${r},${g},${b}`
     
     try {
-      const res = await createCategory({name: e.name, total: e.total, color: rgb}).unwrap()
+      const res = await createCategory(e).unwrap()
       close()
       refetchCategories()
       refetchUser()
