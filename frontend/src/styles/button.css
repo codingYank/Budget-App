@@ -16,6 +16,21 @@
   background-color: hsl(135, 100%, 95%);
 }
 
+.category-color-btn {
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  border: 2px solid;
+  font-size: 15px;
+  padding: .5rem 2rem;
+  font-weight: bold;
+  transition: 100ms;
+}
+
+.category-color-btn:hover {
+  opacity: .8;
+}
+
 .danger-btn {
   border-radius: 10px;
   outline: none;

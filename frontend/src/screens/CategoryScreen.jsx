@@ -55,7 +55,7 @@ const CategoryScreen = () => {
         <div style={{textAlign: 'center'}}>
           <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
             <h1>Transactions</h1>
-            <button className='primary-btn' type='button' onClick={onAddTransaction}>Add Transaction</button>
+            <button className='category-color-btn' type='button' onClick={onAddTransaction} style={{borderColor: category.color, color: category.color, backgroundColor: `${category.color}20`}}>Add Transaction</button>
           </div>
           <table className='table'>
             <thead>
@@ -77,7 +77,6 @@ const CategoryScreen = () => {
               </tbody>
             ))}
           </table>
-          <h1>*Fix Table Order and dates!!!!!!!!!!!!!!!!!!!!!!!!*</h1>
         </div>
       )}
     </div>
