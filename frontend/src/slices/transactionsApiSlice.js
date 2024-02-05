@@ -22,8 +22,11 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
     }),
     getCategoryTransactions: builder.query({
-      query: (id) => ({
+      query: ({ id, page }) => ({
         url: `${TRANSACTIONS_URL}/${id}`,
+        params: {
+          page,
+        },
       }),
       keepUnusedDataFor: 5,
     }),

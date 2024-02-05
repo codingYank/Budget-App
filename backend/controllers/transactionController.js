@@ -37,11 +37,13 @@ const getRecentTransactions = asyncHandler(async (req, res) => {
 
 //get category transactions
 const getCategoryTransactions = asyncHandler(async (req, res) => {
+  const page = Number(req.query.page) || 1
   const transactions = await Transaction.find({
     category: req.params.category,
   })
-    .populate("category")
     .sort("-date -createdAt")
+    .limit(30 * page)
+    .populate("category")
 
   if (transactions) {
     res.status(200).json(transactions)

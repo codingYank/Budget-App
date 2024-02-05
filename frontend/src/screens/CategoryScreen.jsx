@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useAsyncError, useParams } from 'react-router-dom'
 import { useGetCategoryByIdQuery } from '../slices/categoriesApiSlice'
 import Loader from '../components/Loader'
@@ -12,6 +12,19 @@ const CategoryScreen = () => {
 
   const [showAddTransaction, setShowAddTransaction] = useState(false)
   const [showAddTransactionToCat, setShowAddTransactionToCat] = useState(false)
+  const [page, setPage] = useState(1)
+ 
+  const handleScroll = () => {
+      const scrollPercent = (window.innerHeight + window.scrollY) / document.body.scrollHeight
+      console.log(scrollPercent)
+      if (scrollPercent > .9 ) {
+        setPage(page + 1)
+        refetchTransactions()
+        console.log('page: ' + page)
+      }
+  };
+
+  
 
 
   const onAddTransaction = () => {
@@ -26,7 +39,14 @@ const CategoryScreen = () => {
   
   const {data:category, isLoading:categoryLoading, refetch:refetchCategories, error:categoryError} = useGetCategoryByIdQuery(id)
 
-  const {data:transactions, isLoading:transactionsLoading, refetch: refetchTransactions, error:transactionsError} = useGetCategoryTransactionsQuery(id)
+  const {data:transactions, isLoading:transactionsLoading, refetch: refetchTransactions, error:transactionsError} = useGetCategoryTransactionsQuery({id, page})
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+        window.removeEventListener('scroll', handleScroll);
+    };
+}, []);
 
 
   return (
