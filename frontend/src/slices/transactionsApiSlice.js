@@ -28,6 +28,7 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
           page,
         },
       }),
+      providesTags: ["Transaction"],
       keepUnusedDataFor: 5,
     }),
     createTransaction: builder.mutation({

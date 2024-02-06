@@ -38,6 +38,7 @@ const getRecentTransactions = asyncHandler(async (req, res) => {
 //get category transactions
 const getCategoryTransactions = asyncHandler(async (req, res) => {
   const page = Number(req.query.page) || 1
+  console.log(req.query.page)
   const transactions = await Transaction.find({
     category: req.params.category,
   })

@@ -13,40 +13,41 @@ const CategoryScreen = () => {
   const [showAddTransaction, setShowAddTransaction] = useState(false)
   const [showAddTransactionToCat, setShowAddTransactionToCat] = useState(false)
   const [page, setPage] = useState(1)
- 
-  const handleScroll = () => {
-      const scrollPercent = (window.innerHeight + window.scrollY) / document.body.scrollHeight
-      console.log(scrollPercent)
-      if (scrollPercent > .9 ) {
-        setPage(page + 1)
-        refetchTransactions()
-        console.log('page: ' + page)
-      }
-  };
-
+  let pageCount = 1
   
-
-
   const onAddTransaction = () => {
     setShowAddTransaction(true)
   }
-
+  
   const onAddTransactionToCat = () => {
     setShowAddTransactionToCat(true)
   }
-
+  
   const [showCategoryIncrease, setShowCategoryIncrease] = useState(false)
   
   const {data:category, isLoading:categoryLoading, refetch:refetchCategories, error:categoryError} = useGetCategoryByIdQuery(id)
+  
+  const {data:transactions, currentData:currentTransactions, isLoading:transactionsLoading, refetch: refetchTransactions, isFetching:transactionsFetching ,error:transactionsError} = useGetCategoryTransactionsQuery({id, page})
 
-  const {data:transactions, isLoading:transactionsLoading, refetch: refetchTransactions, error:transactionsError} = useGetCategoryTransactionsQuery({id, page})
+  const handleScroll = () => {
+    console.log(transactionsFetching)
+    const scrollPercent = (window.innerHeight + window.scrollY) / document.body.scrollHeight
+    if (scrollPercent > .9 && transactions.length % 30 === 0 && !transactionsFetching ) {
+      console.log('fetching')
+      pageCount = (transactions.length / 30) + 1
+      setPage(pageCount)
+      refetchTransactions()
+    }
+  };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-        window.removeEventListener('scroll', handleScroll);
-    };
-}, []);
+    if (transactions) {
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      return () => {
+          window.removeEventListener('scroll', handleScroll);
+      };
+    }
+}, [transactions]);
 
 
   return (
@@ -97,6 +98,7 @@ const CategoryScreen = () => {
               </tbody>
             ))}
           </table>
+          {transactionsFetching ? (<Loader />) : (null)}
         </div>
       )}
     </div>
