@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.no-scroll {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.no-scroll .scroll {
+  overflow-y: auto;
+  height: 100vh;
+}

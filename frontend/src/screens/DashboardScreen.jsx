@@ -59,7 +59,7 @@ const DashboardScreen = () => {
 
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center' }} className={showAddCategory || showAddPaycheck ? 'freeze' : null}>
+    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center' }} className='scroll'>
       {showAddCategory ? (
         <AddCategory show={setShowAddCategory} refetchCategories={refetchCategories} refetchUser={refetchUser} />
       ) : null}

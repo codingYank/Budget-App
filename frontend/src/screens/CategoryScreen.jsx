@@ -4,6 +4,7 @@ import { useGetCategoryByIdQuery } from '../slices/categoriesApiSlice'
 import Loader from '../components/Loader'
 import { useGetCategoryTransactionsQuery } from '../slices/transactionsApiSlice'
 import '../styles/button.css'
+import '../index.css'
 import AddTransaction from '../components/AddTransaction'
 import { FiEdit2, FiPlus } from "react-icons/fi";
 
@@ -29,11 +30,9 @@ const CategoryScreen = () => {
   
   const {data:transactions, currentData:currentTransactions, isLoading:transactionsLoading, refetch: refetchTransactions, isFetching:transactionsFetching ,error:transactionsError} = useGetCategoryTransactionsQuery({id, page})
 
-  const handleScroll = () => {
-    console.log(transactionsFetching)
-    const scrollPercent = (window.innerHeight + window.scrollY) / document.body.scrollHeight
+  const handleScroll = (e) => {
+    const scrollPercent = (e.target.offsetHeight + e.target.scrollTop) / e.target.scrollHeight
     if (scrollPercent > .9 && transactions.length % 30 === 0 && !transactionsFetching ) {
-      console.log('fetching')
       pageCount = (transactions.length / 30) + 1
       setPage(pageCount)
       refetchTransactions()
@@ -51,7 +50,7 @@ const CategoryScreen = () => {
 
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+    <div onScroll={e => handleScroll(e)}  className='scroll' style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       {showAddTransaction ? (
         <AddTransaction show={setShowAddTransaction} refetchTrans={refetchTransactions} refetchCat={refetchCategories} category={id} />
       ) : null }
