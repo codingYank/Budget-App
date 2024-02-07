@@ -7,12 +7,14 @@ import '../styles/button.css'
 import '../index.css'
 import AddTransaction from '../components/AddTransaction'
 import { FiEdit2, FiPlus } from "react-icons/fi";
+import EditCategory from '../components/EditCategory'
 
 const CategoryScreen = () => {
   const { id } = useParams()
 
   const [showAddTransaction, setShowAddTransaction] = useState(false)
   const [showAddTransactionToCat, setShowAddTransactionToCat] = useState(false)
+  const [showEditCategory, setShowEditCategory] = useState(false)
   const [page, setPage] = useState(1)
   let pageCount = 1
   
@@ -23,10 +25,12 @@ const CategoryScreen = () => {
   const onAddTransactionToCat = () => {
     setShowAddTransactionToCat(true)
   }
+
+  const onEditCategory = () => {
+    setShowEditCategory(true)
+  }
   
-  const [showCategoryIncrease, setShowCategoryIncrease] = useState(false)
-  
-  const {data:category, isLoading:categoryLoading, refetch:refetchCategories, error:categoryError} = useGetCategoryByIdQuery(id)
+  const {data:category, isLoading:categoryLoading, refetch:refetchCategory, error:categoryError} = useGetCategoryByIdQuery(id)
   
   const {data:transactions, currentData:currentTransactions, isLoading:transactionsLoading, refetch: refetchTransactions, isFetching:transactionsFetching ,error:transactionsError} = useGetCategoryTransactionsQuery({id, page})
 
@@ -52,16 +56,19 @@ const CategoryScreen = () => {
   return (
     <div onScroll={e => handleScroll(e)}  className='scroll' style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       {showAddTransaction ? (
-        <AddTransaction show={setShowAddTransaction} refetchTrans={refetchTransactions} refetchCat={refetchCategories} category={id} />
+        <AddTransaction show={setShowAddTransaction} refetchTrans={refetchTransactions} refetchCat={refetchCategory} category={id} />
       ) : null }
       {showAddTransactionToCat ? (
-        <AddTransaction show={setShowAddTransactionToCat} refetchTrans={refetchTransactions} refetchCat={refetchCategories} category={id} addToCat={true} />
+        <AddTransaction show={setShowAddTransactionToCat} refetchTrans={refetchTransactions} refetchCat={refetchCategory} category={id} addToCat={true} />
       ) : null }
+      {showEditCategory ? (
+        <EditCategory show={setShowEditCategory} category={category} refetchCat={refetchCategory} />
+      ) : null}
       {categoryLoading ? (<Loader />) : categoryError ? (<div>Category Error</div>) : (
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px'}}>
           <div style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
             <h1>{category.name}</h1>
-            <button type='button' className='icon-btn'><FiEdit2 /></button>
+            <button type='button' className='icon-btn' onClick={onEditCategory}><FiEdit2 /></button>
           </div>
           <div style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
             <h2>${Number(category.total).toLocaleString('en', {useGrouping:true})}</h2>
@@ -75,7 +82,7 @@ const CategoryScreen = () => {
         <div style={{textAlign: 'center'}}>
           <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
             <h1>Transactions</h1>
-            <button className='category-color-btn' type='button' onClick={onAddTransaction} style={{borderColor: category.color, color: category.color, backgroundColor: `${category.color}20`}}>Add Transaction</button>
+            <button className='category-color-btn' type='button' onClick={onAddTransaction} style={{borderColor: category.color, backgroundColor: `${category.color}20`}}>Add Transaction</button>
           </div>
           <table className='table'>
             <thead>

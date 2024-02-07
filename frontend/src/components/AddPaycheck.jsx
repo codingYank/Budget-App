@@ -58,7 +58,7 @@ const AddPaycheck = ({ show, refetchCategories, refetchUser, categories }) => {
         <h1>New Paycheck</h1>
         <p>{uncategorized}</p>
         <Formik initialValues={initValues} onSubmit={onSubmit}>
-          <Form onChange={onChange}>
+          <Form className='form' onChange={onChange}>
             <div className='form-content'>
               <label htmlFor='name'>Name</label>
               <Field name='name' id='name' />

@@ -56,7 +56,7 @@ const getCategoryById = asyncHandler(async (req, res) => {
 })
 
 const updateCategory = asyncHandler(async (req, res) => {
-  const category = await Category.findById(req.params._id)
+  const category = await Category.findById(req.body.id)
 
   if (category) {
     category.name = req.body.name || category.name
