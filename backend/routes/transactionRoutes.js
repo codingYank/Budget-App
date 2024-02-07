@@ -5,6 +5,7 @@ import {
   addPaycheck,
   addTransaction,
   getCategoryTransactions,
+  getFavoritePaychecks,
   getPaychecks,
   getRecentTransactions,
   getTransactions,
@@ -12,6 +13,7 @@ import {
 
 const router = express.Router()
 
+router.get("/paycheck/favorites", protect, getFavoritePaychecks)
 router.route("/paycheck").post(protect, addPaycheck).get(protect, getPaychecks)
 router.get("/recent", protect, getRecentTransactions)
 router.route("/:category").get(protect, getCategoryTransactions)

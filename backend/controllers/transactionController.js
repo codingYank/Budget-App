@@ -96,7 +96,7 @@ const addTransaction = asyncHandler(async (req, res) => {
 })
 
 const addPaycheck = asyncHandler(async (req, res) => {
-  const { name, value, categories } = req.body
+  const { name, value, categories, favorite, nickname } = req.body
   let newValue = value
   const user = await User.findById(req.user._id)
   console.log(req.body)
@@ -110,6 +110,8 @@ const addPaycheck = asyncHandler(async (req, res) => {
     const paycheck = await Paycheck.create({
       name,
       value,
+      nickname,
+      favorite,
       user: user._id,
       categories,
     })
@@ -157,6 +159,20 @@ const getPaychecks = asyncHandler(async (req, res) => {
   }
 })
 
+const getFavoritePaychecks = asyncHandler(async (req, res) => {
+  const paychecks = await Paycheck.find({
+    user: req.user._id,
+    favroite: true,
+  }).populate("categories.category")
+
+  if (paychecks) {
+    res.status(200).json(paychecks)
+  } else {
+    res.status(404)
+    throw new Error("Paychecks not found")
+  }
+})
+
 export {
   getTransactions,
   getRecentTransactions,
@@ -164,4 +180,5 @@ export {
   addTransaction,
   addPaycheck,
   getPaychecks,
+  getFavoritePaychecks,
 }

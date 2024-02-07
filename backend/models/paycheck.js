@@ -14,6 +14,12 @@ const paycheckSchema = new mongoose.Schema({
     required: true,
     ref: "User",
   },
+  favorite: {
+    type: Boolean,
+  },
+  nickname: {
+    type: String,
+  },
   categories: [
     {
       category: {
