@@ -20,7 +20,6 @@ const AddPaycheck = ({ show, refetchCategories, refetchUser, categories }) => {
 
   //get favorite paychecks
   const {data:favoritePaychecks, isLoading, error} = useGetFavoritePaychecksQuery()
-  console.log(favoritePaychecks)
 
   return (
     <div className='modal-screen'>

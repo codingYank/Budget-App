@@ -11,8 +11,6 @@ const AddPaycheck2 = ({ show, refetchCategories, refetchUser, categories, favori
     show(false)
   }
 
-  console.log(favoritePaycheck)
-
   const [createPaycheck, {isLoading}] = useCreatePaycheckMutation()
 
   let categoryIds
@@ -25,6 +23,15 @@ const AddPaycheck2 = ({ show, refetchCategories, refetchUser, categories, favori
         depositAmount: category.depositAmount,
       }
     ))
+    categories.map((category, index) => {
+      if (categoryIds[index]?.category === category.category) {
+        categoryIds.push({
+          category: category._id,
+          name: category.name,
+          depositAmount: 0,
+        })
+      }
+    })
   } else {
     categoryIds = categories.map(category => (
       {
