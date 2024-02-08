@@ -11,22 +11,37 @@ const AddPaycheck2 = ({ show, refetchCategories, refetchUser, categories, favori
     show(false)
   }
 
+  console.log(favoritePaycheck)
+
   const [createPaycheck, {isLoading}] = useCreatePaycheckMutation()
 
-  const categoryIds = categories.map(category => (
-    {
-      category: category._id,
-      name: category.name,
-      depositAmount: 0,
-    }
-  ))
+  let categoryIds
+  
+  if (favoritePaycheck.categories) {
+    categoryIds = favoritePaycheck.categories.map(category => (
+      {
+        category: category.category._id,
+        name: category.category.name,
+        depositAmount: category.depositAmount,
+      }
+    ))
+  } else {
+    categoryIds = categories.map(category => (
+      {
+        category: category._id,
+        name: category.name,
+        depositAmount: 0,
+      }
+    ))
+  }
+  
 
   const initValues = {
     name: '',
     value: favoritePaycheck?.value || 0,
     nickname: '',
-    favorite: '',
-    categories: favoritePaycheck?.categories || categoryIds
+    favorite: false,
+    categories: categoryIds
   }
 
   const onSubmit = async (e) => {

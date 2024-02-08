@@ -38,7 +38,6 @@ const getRecentTransactions = asyncHandler(async (req, res) => {
 //get category transactions
 const getCategoryTransactions = asyncHandler(async (req, res) => {
   const page = Number(req.query.page) || 1
-  console.log(req.query.page)
   const transactions = await Transaction.find({
     category: req.params.category,
   })
@@ -99,12 +98,10 @@ const addPaycheck = asyncHandler(async (req, res) => {
   const { name, value, categories, favorite, nickname } = req.body
   let newValue = value
   const user = await User.findById(req.user._id)
-  console.log(req.body)
   let totalDeposit = 0
   categories.forEach((category) => {
     totalDeposit = Number(category.depositAmount) + Number(totalDeposit)
   })
-  console.log(totalDeposit)
   const uncategorized = value - totalDeposit
   if (totalDeposit <= value) {
     const paycheck = await Paycheck.create({
@@ -162,7 +159,7 @@ const getPaychecks = asyncHandler(async (req, res) => {
 const getFavoritePaychecks = asyncHandler(async (req, res) => {
   const paychecks = await Paycheck.find({
     user: req.user._id,
-    favroite: true,
+    favorite: true,
   }).populate("categories.category")
 
   if (paychecks) {

@@ -32,7 +32,7 @@ const CategoryScreen = () => {
   
   const {data:category, isLoading:categoryLoading, refetch:refetchCategory, error:categoryError} = useGetCategoryByIdQuery(id)
   
-  const {data:transactions, currentData:currentTransactions, isLoading:transactionsLoading, refetch: refetchTransactions, isFetching:transactionsFetching ,error:transactionsError} = useGetCategoryTransactionsQuery({id, page})
+  const {data:transactions, currentData:currentTransactions, isLoading:transactionsLoading, refetch: refetchTransactions, isFetching:transactionsFetching, error:transactionsError} = useGetCategoryTransactionsQuery({id, page})
 
   const handleScroll = (e) => {
     const scrollPercent = (e.target.offsetHeight + e.target.scrollTop) / e.target.scrollHeight
