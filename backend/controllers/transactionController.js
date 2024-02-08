@@ -170,6 +170,30 @@ const getFavoritePaychecks = asyncHandler(async (req, res) => {
   }
 })
 
+const deleteTransaction = asyncHandler(async (req, res) => {
+  const transaction = await Transaction.findById(req.body.transaction)
+  const category = await Category.findById(req.body.category)
+  const user = await User.findById(req.user._id)
+
+  if (transaction && category && user) {
+    if (transaction.paycheck) {
+      throw new Error("Cannot delete paycheck transactions")
+    } else {
+      user.totalAvailable = user.totalAvailable - transaction.value
+      await user.save()
+
+      category.total = category.total - transaction.value
+      await category.save()
+
+      await Transaction.deleteOne(transaction._id)
+
+      res.status(200).json(user)
+    }
+  } else {
+    throw new Error("Item not found")
+  }
+})
+
 export {
   getTransactions,
   getRecentTransactions,
@@ -178,4 +202,5 @@ export {
   addPaycheck,
   getPaychecks,
   getFavoritePaychecks,
+  deleteTransaction,
 }

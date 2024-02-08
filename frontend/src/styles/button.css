@@ -37,16 +37,16 @@
   cursor: pointer;
   border: 2px solid hsl(0, 74%, 44%);
   color: hsl(0, 74%, 44%);
+  background-color: hsl(0, 74%, 95%);
   font-size: 15px;
   padding: .5rem 2rem;
   font-weight: bold;
-  background-color: white;
 }
 
 .danger-btn:hover {
   color: hsl(0, 74%, 54%);
   border-color: hsl(0, 74%, 54%);
-  background-color: hsl(0, 74%, 95%);
+  background-color: hsl(0, 74%, 92%);
 }
 
 .clear-btn {

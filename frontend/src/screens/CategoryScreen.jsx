@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { useAsyncError, useParams } from 'react-router-dom'
 import { useGetCategoryByIdQuery } from '../slices/categoriesApiSlice'
 import Loader from '../components/Loader'
-import { useGetCategoryTransactionsQuery } from '../slices/transactionsApiSlice'
+import { useDeleteTransactionMutation, useGetCategoryTransactionsQuery } from '../slices/transactionsApiSlice'
 import '../styles/button.css'
 import '../index.css'
 import AddTransaction from '../components/AddTransaction'
 import { FiEdit2, FiPlus } from "react-icons/fi";
+import { MdDelete } from "react-icons/md";
 import EditCategory from '../components/EditCategory'
+import { toast } from 'react-toastify'
 
 const CategoryScreen = () => {
   const { id } = useParams()
@@ -33,6 +35,22 @@ const CategoryScreen = () => {
   const {data:category, isLoading:categoryLoading, refetch:refetchCategory, error:categoryError} = useGetCategoryByIdQuery(id)
   
   const {data:transactions, currentData:currentTransactions, isLoading:transactionsLoading, refetch: refetchTransactions, isFetching:transactionsFetching, error:transactionsError} = useGetCategoryTransactionsQuery({id, page})
+
+  const [deleteTransaction, {isLoading}] = useDeleteTransactionMutation()
+
+  const onDelete = async (transaction) => {
+    if (window.confirm('Are you sure you want to delete this transaction?')) {
+      try {
+        await deleteTransaction({transaction, category: id}).unwrap()
+        refetchCategory()
+        refetchTransactions()
+      } catch (err) {
+        toast.error(err?.data?.message || err.error)
+      }
+    } else {
+      console.log('aborted')
+    }
+  }
 
   const handleScroll = (e) => {
     const scrollPercent = (e.target.offsetHeight + e.target.scrollTop) / e.target.scrollHeight
@@ -91,15 +109,26 @@ const CategoryScreen = () => {
                 <th className='th'>Category</th>
                 <th className='th'>Name</th>
                 <th className='th'>Amount</th>
+                <th className='th'></th>
               </tr>
             </thead>
             {transactions.map((transaction, index ) => (
               <tbody key={transaction._id}  style={index % 2 === 0 ? ({backgroundColor: `${category.color}4d`}) : ({backgroundColor: `${category.color}30`})} className='table-row'>
-                <tr>
+                <tr style={{height: '34px'}}>
                   <td className='td'>{new Date(transaction.date).getUTCMonth() + 1}/{new Date(transaction.date).getUTCDate()}/{new Date(transaction.date).getUTCFullYear()}</td>
                   <td className='td'>{transaction.category.name}</td>
                   <td className='td'>{transaction.name}</td>
                   <td className='td'>${Number(transaction.value).toLocaleString('en', {useGrouping:true})}</td>
+                  <td className='td'>
+                    {transaction.paycheck ? (null) : (
+                      <button 
+                        className='danger-btn' 
+                        onClick={() => onDelete(transaction._id)}
+                        style={{fontSize: '18px', padding: '.3rem .8rem 0rem .8rem'}}
+                        ><MdDelete />
+                      </button>
+                    )}
+                  </td>
                 </tr>
               </tbody>
             ))}

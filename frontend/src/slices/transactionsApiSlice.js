@@ -51,6 +51,13 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
     }),
+    deleteTransaction: builder.mutation({
+      query: (data) => ({
+        url: TRANSACTIONS_URL,
+        method: "DELETE",
+        body: data,
+      }),
+    }),
   }),
 })
 
@@ -61,4 +68,5 @@ export const {
   useCreateTransactionMutation,
   useCreatePaycheckMutation,
   useGetFavoritePaychecksQuery,
+  useDeleteTransactionMutation,
 } = transactionsApiSlice
