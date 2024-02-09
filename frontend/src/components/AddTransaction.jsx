@@ -1,15 +1,22 @@
-import { Field, Form, Formik } from 'formik'
-import React from 'react'
-import { useParams } from 'react-router-dom'
-import { useCreateTransactionMutation } from '../slices/transactionsApiSlice'
-import { toast } from 'react-toastify'
+import { Field, Form, Formik } from "formik"
+import React from "react"
+import { useParams } from "react-router-dom"
+import { useCreateTransactionMutation } from "../slices/transactionsApiSlice"
+import { toast } from "react-toastify"
 
-const AddTransaction = ({show, refetchTrans, refetchCat, refetchUser, category, addToCat}) => {
+const AddTransaction = ({
+  show,
+  refetchTrans,
+  refetchCat,
+  refetchUser,
+  category,
+  addToCat,
+}) => {
   const close = () => {
     show(false)
   }
 
-  const [createTransaction, {isLoading}] = useCreateTransactionMutation()
+  const [createTransaction, { isLoading }] = useCreateTransactionMutation()
 
   const onSubmit = async (e) => {
     if (addToCat) {
@@ -18,7 +25,7 @@ const AddTransaction = ({show, refetchTrans, refetchCat, refetchUser, category, 
           name: e.name,
           value: Number(e.value),
           date: e.date,
-          category
+          category,
         }).unwrap()
         refetchCat()
         refetchTrans()
@@ -36,7 +43,7 @@ const AddTransaction = ({show, refetchTrans, refetchCat, refetchUser, category, 
           name: e.name,
           value: Number(e.value) * -1,
           date: e.date,
-          category
+          category,
         }).unwrap()
         refetchCat()
         refetchTrans()
@@ -52,30 +59,34 @@ const AddTransaction = ({show, refetchTrans, refetchCat, refetchUser, category, 
   }
 
   const initData = {
-    name: '',
+    name: "",
     value: 0,
-    date: new Date().toISOString().split('T')[0]
+    date: new Date().toISOString().split("T")[0],
   }
   return (
-    <div className='modal-screen'>
-      <div className='modal-content'>
-        <button type='button' onClick={close} className='invisable-btn'>X</button>
+    <div className="modal-screen">
+      <div className="modal-content">
+        <button type="button" onClick={close} className="invisable-btn">
+          X
+        </button>
         <h1>Add Transaction</h1>
         <Formik initialValues={initData} onSubmit={onSubmit}>
-          <Form className='form'>
-            <div className='form-content'>
-              <label htmlFor='name'>Name</label>
-              <Field id='name' name='name' />
+          <Form className="form">
+            <div className="form-content">
+              <label htmlFor="name">Name</label>
+              <Field id="name" name="name" />
             </div>
-            <div className='form-content'>
+            <div className="form-content">
               <label htmlFor="value">Amount</label>
-              <Field id='value' name='value' type='number' />
+              <Field id="value" name="value" type="number" />
             </div>
-            <div className='form-content'>
-              <label htmlFor='date'>Date</label>
-              <Field id='date' name='date' type='date' />
+            <div className="form-content">
+              <label htmlFor="date">Date</label>
+              <Field id="date" name="date" type="date" />
             </div>
-            <button className='primary-btn' type='submit'>Add</button>
+            <button className="primary-btn" type="submit">
+              Add
+            </button>
           </Form>
         </Formik>
       </div>

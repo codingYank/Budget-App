@@ -1,9 +1,15 @@
-import { Field, FieldArray, Form, Formik } from 'formik'
-import React, { useState } from 'react'
-import { useCreatePaycheckMutation } from '../slices/transactionsApiSlice'
-import { toast } from 'react-toastify'
+import { Field, FieldArray, Form, Formik } from "formik"
+import React, { useState } from "react"
+import { useCreatePaycheckMutation } from "../slices/transactionsApiSlice"
+import { toast } from "react-toastify"
 
-const AddPaycheck2 = ({ show, refetchCategories, refetchUser, categories, favoritePaycheck }) => {
+const AddPaycheck2 = ({
+  show,
+  refetchCategories,
+  refetchUser,
+  categories,
+  favoritePaycheck,
+}) => {
   const [uncategorized, setUncategorized] = useState(0)
   const [favorite, setFavorite] = useState(false)
 
@@ -11,18 +17,16 @@ const AddPaycheck2 = ({ show, refetchCategories, refetchUser, categories, favori
     show(false)
   }
 
-  const [createPaycheck, {isLoading}] = useCreatePaycheckMutation()
+  const [createPaycheck, { isLoading }] = useCreatePaycheckMutation()
 
   let categoryIds
-  
+
   if (favoritePaycheck.categories) {
-    categoryIds = favoritePaycheck.categories.map(category => (
-      {
-        category: category.category._id,
-        name: category.category.name,
-        depositAmount: category.depositAmount,
-      }
-    ))
+    categoryIds = favoritePaycheck.categories.map((category) => ({
+      category: category.category._id,
+      name: category.category.name,
+      depositAmount: category.depositAmount,
+    }))
     categories.map((category, index) => {
       if (categoryIds[index]?.category === category.category) {
         categoryIds.push({
@@ -33,22 +37,19 @@ const AddPaycheck2 = ({ show, refetchCategories, refetchUser, categories, favori
       }
     })
   } else {
-    categoryIds = categories.map(category => (
-      {
-        category: category._id,
-        name: category.name,
-        depositAmount: 0,
-      }
-    ))
+    categoryIds = categories.map((category) => ({
+      category: category._id,
+      name: category.name,
+      depositAmount: 0,
+    }))
   }
-  
 
   const initValues = {
-    name: '',
+    name: "",
     value: favoritePaycheck?.value || 0,
-    nickname: '',
+    nickname: "",
     favorite: false,
-    categories: categoryIds
+    categories: categoryIds,
   }
 
   const onSubmit = async (e) => {
@@ -78,44 +79,54 @@ const AddPaycheck2 = ({ show, refetchCategories, refetchUser, categories, favori
 
   return (
     <>
-    
-          <p>{uncategorized}</p>
-          <Formik initialValues={initValues} onSubmit={onSubmit}>
-            <Form className='form' onChange={onChange}>
-              <div className='form-content'>
-                <label htmlFor='name'>Name</label>
-                <Field name='name' id='name' />
-              </div>
-              <div className='form-content'>
-                <label htmlFor='value'>Paycheck Total</label>
-                <Field name='value' id='value' type='number'/>
-              </div>
-              <FieldArray name='categories'>
-                {() => (
-                  <>
-                  {initValues.categories.length > 0 && 
-                    initValues.categories.map((category, index) => (
-                      <div className='form-content' key={category.category}>
-                        <label htmlFor={category.category}>{category.name}</label>
-                        <Field name={`categories.${index}.depositAmount`} id={category.category} type='number' />
-                      </div>
-                    ))}
-                  </>
-                )}
-              </FieldArray>
-              <div >
-                <label htmlFor='favorite'>Favorite Paycheck</label>
-                <Field name='favorite' type='checkbox' id='favorite' onClick={() => setFavorite(!favorite)} />
-              </div>
-              {favorite ? (
-                <div className='form-content'>
-                  <label htmlFor='nickname'>Paycheck Nickname</label>
-                  <Field name='nickname' id='nickname' />
-                </div>
-              ) : (null) }
-              <button className='primary-btn' type='submit' disabled={isLoading}>Create</button>
-            </Form>
-          </Formik>
+      <p>{uncategorized}</p>
+      <Formik initialValues={initValues} onSubmit={onSubmit}>
+        <Form className="form" onChange={onChange}>
+          <div className="form-content">
+            <label htmlFor="name">Name</label>
+            <Field name="name" id="name" />
+          </div>
+          <div className="form-content">
+            <label htmlFor="value">Paycheck Total</label>
+            <Field name="value" id="value" type="number" />
+          </div>
+          <FieldArray name="categories">
+            {() => (
+              <>
+                {initValues.categories.length > 0 &&
+                  initValues.categories.map((category, index) => (
+                    <div className="form-content" key={category.category}>
+                      <label htmlFor={category.category}>{category.name}</label>
+                      <Field
+                        name={`categories.${index}.depositAmount`}
+                        id={category.category}
+                        type="number"
+                      />
+                    </div>
+                  ))}
+              </>
+            )}
+          </FieldArray>
+          <div>
+            <label htmlFor="favorite">Favorite Paycheck</label>
+            <Field
+              name="favorite"
+              type="checkbox"
+              id="favorite"
+              onClick={() => setFavorite(!favorite)}
+            />
+          </div>
+          {favorite ? (
+            <div className="form-content">
+              <label htmlFor="nickname">Paycheck Nickname</label>
+              <Field name="nickname" id="nickname" />
+            </div>
+          ) : null}
+          <button className="primary-btn" type="submit" disabled={isLoading}>
+            Create
+          </button>
+        </Form>
+      </Formik>
     </>
   )
 }
