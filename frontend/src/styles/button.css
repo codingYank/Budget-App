@@ -16,6 +16,11 @@
   background-color: hsl(135, 100%, 95%);
 }
 
+a.primary-btn {
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 .category-color-btn {
   border-radius: 10px;
   outline: none;

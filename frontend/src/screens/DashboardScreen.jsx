@@ -9,7 +9,7 @@ import "../styles/button.css"
 import AddCategory from "../components/AddCategory"
 import AddTransaction from "../components/AddTransaction"
 import AddPaycheck from "../components/AddPaycheck"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { logout } from "../slices/authSlice"
 import { toast } from "react-toastify"
@@ -151,6 +151,7 @@ const DashboardScreen = () => {
           <button className="primary-btn" type="button" onClick={onAddPaycheck}>
             Add Paycheck
           </button>
+          <Link className="primary-btn" to={'/paychecks'}>View Paychecks</Link>
         </div>
       )}
       {categoriesLoading ? (

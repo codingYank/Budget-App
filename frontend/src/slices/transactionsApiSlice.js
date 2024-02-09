@@ -45,6 +45,12 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getPaychecks: builder.query({
+      query: () => ({
+        url: `${TRANSACTIONS_URL}/paycheck`,
+      }),
+      keepUnusedDataFor: 5,
+    }),
     getFavoritePaychecks: builder.query({
       query: () => ({
         url: `${TRANSACTIONS_URL}/paycheck/favorites`,
@@ -67,6 +73,7 @@ export const {
   useGetCategoryTransactionsQuery,
   useCreateTransactionMutation,
   useCreatePaycheckMutation,
+  useGetPaychecksQuery,
   useGetFavoritePaychecksQuery,
   useDeleteTransactionMutation,
 } = transactionsApiSlice
