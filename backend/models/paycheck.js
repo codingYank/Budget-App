@@ -33,6 +33,9 @@ const paycheckSchema = new mongoose.Schema({
       },
     },
   ],
+},
+{
+  timestamps: true,
 })
 
 const Paycheck = mongoose.model("Paycheck", paycheckSchema)

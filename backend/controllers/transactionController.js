@@ -146,7 +146,7 @@ const addPaycheck = asyncHandler(async (req, res) => {
 const getPaychecks = asyncHandler(async (req, res) => {
   const paychecks = await Paycheck.find({ user: req.user._id }).populate(
     "categories.category"
-  )
+  ).sort('-createdAt')
 
   if (paychecks) {
     res.status(200).json(paychecks)
@@ -156,11 +156,38 @@ const getPaychecks = asyncHandler(async (req, res) => {
   }
 })
 
+const favoriteAPaycheck = asyncHandler(async (req, res) => {
+  const paycheck = await Paycheck.findById(req.body.id)
+
+  if (paycheck) {
+    paycheck.nickname = req.body.nickname
+    paycheck.favorite = true
+    await paycheck.save()
+    res.status(200).json(paycheck)
+  } else {
+    res.status(404)
+    throw new Error('Paycheck not found')
+  }
+})
+
+const unFavoriteAPaycheck = asyncHandler(async (req, res) => {
+  const paycheck = await Paycheck.findById(req.body.id)
+
+  if (paycheck) {
+    paycheck.favorite = false
+    await paycheck.save()
+    res.status(200).json(paycheck)
+  } else {
+    res.status(404)
+    throw new Error('Paycheck not found')
+  }
+})
+
 const getFavoritePaychecks = asyncHandler(async (req, res) => {
   const paychecks = await Paycheck.find({
     user: req.user._id,
     favorite: true,
-  }).populate("categories.category")
+  }).populate("categories.category").sort('-createdAt')
 
   if (paychecks) {
     res.status(200).json(paychecks)
@@ -201,6 +228,8 @@ export {
   addTransaction,
   addPaycheck,
   getPaychecks,
+  favoriteAPaycheck,
+  unFavoriteAPaycheck,
   getFavoritePaychecks,
   deleteTransaction,
 }

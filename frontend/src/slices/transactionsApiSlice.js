@@ -57,6 +57,20 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
     }),
+    unFavoritePaycheck: builder.mutation({
+      query: (data) => ({
+        url: `${TRANSACTIONS_URL}/paycheck/unfavorite`,
+        body: data,
+        method: 'PUT'
+      }),
+    }),
+    favoritePaycheck: builder.mutation({
+      query: (data) => ({
+        url: `${TRANSACTIONS_URL}/paycheck/favorite`,
+        body: data,
+        method: 'PUT'
+      }),
+    }),
     deleteTransaction: builder.mutation({
       query: (data) => ({
         url: TRANSACTIONS_URL,
@@ -75,5 +89,7 @@ export const {
   useCreatePaycheckMutation,
   useGetPaychecksQuery,
   useGetFavoritePaychecksQuery,
+  useUnFavoritePaycheckMutation,
+  useFavoritePaycheckMutation,
   useDeleteTransactionMutation,
 } = transactionsApiSlice

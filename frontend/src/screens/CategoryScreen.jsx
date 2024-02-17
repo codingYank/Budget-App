@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react"
-import { useAsyncError, useParams } from "react-router-dom"
+import React, { useState, useEffect, useCallback, useRef } from "react"
+import { useParams } from "react-router-dom"
 import { useGetCategoryByIdQuery } from "../slices/categoriesApiSlice"
 import Loader from "../components/Loader"
 import {
@@ -21,7 +21,7 @@ const CategoryScreen = () => {
   const [showAddTransactionToCat, setShowAddTransactionToCat] = useState(false)
   const [showEditCategory, setShowEditCategory] = useState(false)
   const [page, setPage] = useState(1)
-  let pageCount = 1
+  let pageCount = useRef(1)
 
   const onAddTransaction = () => {
     setShowAddTransaction(true)
@@ -44,7 +44,6 @@ const CategoryScreen = () => {
 
   const {
     data: transactions,
-    currentData: currentTransactions,
     isLoading: transactionsLoading,
     refetch: refetchTransactions,
     isFetching: transactionsFetching,
@@ -74,7 +73,7 @@ const CategoryScreen = () => {
     }
   }
 
-  const handleScroll = (e) => {
+  const handleScroll = useCallback((e) => {
     const scrollPercent =
       (e.target.offsetHeight + e.target.scrollTop) / e.target.scrollHeight
     if (
@@ -82,11 +81,11 @@ const CategoryScreen = () => {
       transactions.length % 30 === 0 &&
       !transactionsFetching
     ) {
-      pageCount = transactions.length / 30 + 1
-      setPage(pageCount)
+      pageCount.current = transactions.length / 30 + 1
+      setPage(pageCount.current)
       refetchTransactions()
     }
-  }
+  }, [refetchTransactions, transactions, transactionsFetching])
 
   useEffect(() => {
     if (transactions) {
@@ -95,7 +94,7 @@ const CategoryScreen = () => {
         window.removeEventListener("scroll", handleScroll)
       }
     }
-  }, [transactions])
+  }, [transactions, handleScroll])
 
   return (
     <div
@@ -228,6 +227,7 @@ const CategoryScreen = () => {
                     {transaction.paycheck ? null : (
                       <button
                         className="danger-btn"
+                        disabled={isLoading}
                         onClick={() => onDelete(transaction)}
                         style={{
                           fontSize: "18px",
