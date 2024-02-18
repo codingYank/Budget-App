@@ -1,6 +1,5 @@
 import { Field, Form, Formik } from "formik"
 import React from "react"
-import { useParams } from "react-router-dom"
 import { useCreateTransactionMutation } from "../slices/transactionsApiSlice"
 import { toast } from "react-toastify"
 
@@ -69,7 +68,7 @@ const AddTransaction = ({
         <button type="button" onClick={close} className="invisable-btn">
           X
         </button>
-        <h1>Add Transaction</h1>
+        {addToCat ? (<h1>Add to Category</h1>) : (<h1>Add Transaction</h1>)}
         <Formik initialValues={initData} onSubmit={onSubmit}>
           <Form className="form">
             <div className="form-content">
@@ -84,7 +83,7 @@ const AddTransaction = ({
               <label htmlFor="date">Date</label>
               <Field id="date" name="date" type="date" />
             </div>
-            <button className="primary-btn" type="submit">
+            <button className="primary-btn" type="submit" disabled={isLoading}>
               Add
             </button>
           </Form>

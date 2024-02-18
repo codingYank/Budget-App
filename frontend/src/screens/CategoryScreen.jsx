@@ -10,9 +10,11 @@ import "../styles/button.css"
 import "../index.css"
 import AddTransaction from "../components/AddTransaction"
 import { FiEdit2, FiPlus } from "react-icons/fi"
+import { FaMoneyBillTransfer } from "react-icons/fa6"
 import { MdDelete } from "react-icons/md"
 import EditCategory from "../components/EditCategory"
 import { toast } from "react-toastify"
+import Transfer from "../components/Transfer"
 
 const CategoryScreen = () => {
   const { id } = useParams()
@@ -20,6 +22,7 @@ const CategoryScreen = () => {
   const [showAddTransaction, setShowAddTransaction] = useState(false)
   const [showAddTransactionToCat, setShowAddTransactionToCat] = useState(false)
   const [showEditCategory, setShowEditCategory] = useState(false)
+  const [showTransfer, setShowTransfer] = useState(false)
   const [page, setPage] = useState(1)
   let pageCount = useRef(1)
 
@@ -33,6 +36,10 @@ const CategoryScreen = () => {
 
   const onEditCategory = () => {
     setShowEditCategory(true)
+  }
+
+  const onTransfer = () => {
+    setShowTransfer(true)
   }
 
   const {
@@ -73,19 +80,22 @@ const CategoryScreen = () => {
     }
   }
 
-  const handleScroll = useCallback((e) => {
-    const scrollPercent =
-      (e.target.offsetHeight + e.target.scrollTop) / e.target.scrollHeight
-    if (
-      scrollPercent > 0.9 &&
-      transactions.length % 30 === 0 &&
-      !transactionsFetching
-    ) {
-      pageCount.current = transactions.length / 30 + 1
-      setPage(pageCount.current)
-      refetchTransactions()
-    }
-  }, [refetchTransactions, transactions, transactionsFetching])
+  const handleScroll = useCallback(
+    (e) => {
+      const scrollPercent =
+        (e.target.offsetHeight + e.target.scrollTop) / e.target.scrollHeight
+      if (
+        scrollPercent > 0.9 &&
+        transactions.length % 30 === 0 &&
+        !transactionsFetching
+      ) {
+        pageCount.current = transactions.length / 30 + 1
+        setPage(pageCount.current)
+        refetchTransactions()
+      }
+    },
+    [refetchTransactions, transactions, transactionsFetching]
+  )
 
   useEffect(() => {
     if (transactions) {
@@ -126,6 +136,14 @@ const CategoryScreen = () => {
           refetchCat={refetchCategory}
         />
       ) : null}
+      {showTransfer ? (
+        <Transfer
+          show={setShowTransfer}
+          refetchTrans={refetchTransactions}
+          refetchCat={refetchCategory}
+          category={id}
+        />
+      ) : null}
       {categoryLoading ? (
         <Loader />
       ) : categoryError ? (
@@ -158,6 +176,9 @@ const CategoryScreen = () => {
               onClick={onAddTransactionToCat}
             >
               <FiPlus />
+            </button>
+            <button className="icon-btn" type="button" onClick={onTransfer}>
+              <FaMoneyBillTransfer />
             </button>
           </div>
         </div>
@@ -224,7 +245,7 @@ const CategoryScreen = () => {
                     })}
                   </td>
                   <td className="td">
-                    {transaction.paycheck ? null : (
+                    {transaction.paycheck || transaction.transfer === true ? null : (
                       <button
                         className="danger-btn"
                         disabled={isLoading}

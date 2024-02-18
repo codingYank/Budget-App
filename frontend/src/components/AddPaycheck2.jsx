@@ -79,7 +79,6 @@ const AddPaycheck2 = ({
 
   return (
     <>
-      <p>{uncategorized}</p>
       <Formik initialValues={initValues} onSubmit={onSubmit}>
         <Form className="form" onChange={onChange}>
           <div className="form-content">
@@ -107,6 +106,7 @@ const AddPaycheck2 = ({
               </>
             )}
           </FieldArray>
+          <p>Savings: ${uncategorized}</p>
           <div>
             <label htmlFor="favorite">Favorite Paycheck</label>
             <Field

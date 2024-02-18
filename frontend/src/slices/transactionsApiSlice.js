@@ -78,6 +78,13 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    createTransfer: builder.mutation({
+      query: (data) => ({
+        url: `${TRANSACTIONS_URL}/transfer`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 })
 
@@ -92,4 +99,5 @@ export const {
   useUnFavoritePaycheckMutation,
   useFavoritePaycheckMutation,
   useDeleteTransactionMutation,
+  useCreateTransferMutation
 } = transactionsApiSlice

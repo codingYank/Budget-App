@@ -221,6 +221,53 @@ const deleteTransaction = asyncHandler(async (req, res) => {
   }
 })
 
+const createTransfer = asyncHandler(async (req, res) => {
+  const from = await Category.findById(req.body.from)
+  const to = await Category.findById(req.body.to)
+  const user = await User.findById(req.user._id)
+  const amount = req.body.amount
+  if (from && to) {
+    if (Number(from.total) >= Number(amount)) {
+      from.total = Number(from.total) - Number(amount)
+      await from.save()
+      to.total = Number(to.total) + Number(amount)
+      await to.save()
+
+      const toTransaction = await Transaction.create({
+        name: `${from.name} to ${to.name}` ,
+        value: amount,
+        category: to._id,
+        date: new Date(),
+        user: user._id,
+        categoryTotal: to.total,
+        userTotal: user.totalAvailable,
+        transfer: true
+      })
+
+      await Transaction.create({
+        name: `${from.name} to ${to.name}` ,
+        value: amount * -1,
+        category: from._id,
+        date: new Date(),
+        user: user._id,
+        categoryTotal: from.total,
+        userTotal: user.totalAvailable,
+        transfer: true
+      })
+
+      if (toTransaction) {
+        res.status(200).json(toTransaction)
+      } else {
+        throw new Error('Failed')
+      }
+    } else {
+      throw new Error('Insufficiant funds')
+    }
+  } else {
+    throw new Error('Category not found')
+  }
+})
+
 export {
   getTransactions,
   getRecentTransactions,
@@ -232,4 +279,5 @@ export {
   unFavoriteAPaycheck,
   getFavoritePaychecks,
   deleteTransaction,
+  createTransfer
 }

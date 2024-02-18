@@ -138,7 +138,7 @@ const DashboardScreen = () => {
               </h3>
             </div>
             <div style={{ textAlign: "center" }}>
-              <h2>Uncategorized</h2>
+              <h2>Savings</h2>
               <h4>
                 $
                 {Number(user.uncategorized).toLocaleString("en", {

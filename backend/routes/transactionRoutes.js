@@ -4,6 +4,7 @@ import { protect } from "../middleware/authMiddleware.js"
 import {
   addPaycheck,
   addTransaction,
+  createTransfer,
   deleteTransaction,
   favoriteAPaycheck,
   getCategoryTransactions,
@@ -22,6 +23,7 @@ router.put('/paycheck/unfavorite', protect, unFavoriteAPaycheck)
 router.route("/paycheck").post(protect, addPaycheck).get(protect, getPaychecks)
 router.get("/recent", protect, getRecentTransactions)
 router.route("/:category").get(protect, getCategoryTransactions)
+router.route('/transfer').post(protect, createTransfer)
 router
   .route("/")
   .get(protect, getTransactions)

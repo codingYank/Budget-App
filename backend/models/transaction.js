@@ -24,6 +24,9 @@ const transactionSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Paycheck",
     },
+    transfer: {
+      type: Boolean
+    },
     categoryTotal: {
       type: Number,
       required: true,

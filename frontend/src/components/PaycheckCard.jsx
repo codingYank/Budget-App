@@ -53,6 +53,7 @@ const PaycheckCard = ({
           className="invisable-btn"
           type="button"
           onClick={(e) => onUnFavorite(e, paycheck._id)}
+          disabled={unfavoriteLoading || favoriteLoading}
         >
           <GoStarFill />
         </button>
@@ -61,6 +62,7 @@ const PaycheckCard = ({
           className="invisable-btn"
           type="button"
           onClick={(e) => onFavorite(e)}
+          disabled={unfavoriteLoading || favoriteLoading}
         >
           <GoStar />
         </button>
