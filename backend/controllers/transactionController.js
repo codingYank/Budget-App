@@ -144,9 +144,13 @@ const addPaycheck = asyncHandler(async (req, res) => {
 })
 
 const getPaychecks = asyncHandler(async (req, res) => {
-  const paychecks = await Paycheck.find({ user: req.user._id }).populate(
+  const page = Number(req.query.page)
+  const paychecks = await Paycheck.find({ user: req.user._id }).
+  sort('-createdAt').
+  limit(16 * page).
+  populate(
     "categories.category"
-  ).sort('-createdAt')
+  )
 
   if (paychecks) {
     res.status(200).json(paychecks)

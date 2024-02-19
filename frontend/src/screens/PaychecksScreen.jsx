@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import {
   useGetFavoritePaychecksQuery,
   useGetPaychecksQuery,
@@ -7,12 +7,17 @@ import Loader from "../components/Loader"
 import PaycheckCard from "../components/PaycheckCard"
 
 const PaychecksScreen = () => {
+  const [page, setPage] = useState(1)
+  let pageCount = useRef(1)
+
   const {
     data: paychecks,
     refetch: refetchPaychecks,
+    isFetching: paychecksFetching,
     isLoading: paychecksLoading,
     error: paychecksError,
-  } = useGetPaychecksQuery()
+  } = useGetPaychecksQuery({ page })
+
   const {
     data: favoritePaychecks,
     refetch: refetchFavorites,
@@ -20,10 +25,37 @@ const PaychecksScreen = () => {
     error: favoritePaychecksError,
   } = useGetFavoritePaychecksQuery()
 
+  const handleScroll = useCallback(
+    (e) => {
+      const scrollPercent =
+        (e.target.offsetHeight + e.target.scrollTop) / e.target.scrollHeight
+      if (
+        scrollPercent > 0.9 &&
+        paychecks.length % 16 === 0 &&
+        !paychecksFetching
+      ) {
+        pageCount.current = paychecks.length / 16 + 1
+        setPage(pageCount.current)
+        refetchPaychecks()
+      }
+    },
+    [refetchPaychecks, paychecks, paychecksFetching]
+  )
+
+  useEffect(() => {
+    if (paychecks) {
+      window.addEventListener("scroll", handleScroll, { passive: true })
+      return () => {
+        window.removeEventListener("scroll", handleScroll)
+      }
+    }
+  }, [paychecks, handleScroll])
+
   return (
     <div
       className="scroll"
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      onScroll={(e) => handleScroll(e)}
     >
       <h1 style={{ textAlign: "center" }}>Paychecks</h1>
       <div style={{ textAlign: "center" }}>

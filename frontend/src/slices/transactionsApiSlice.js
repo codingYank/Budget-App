@@ -46,8 +46,11 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getPaychecks: builder.query({
-      query: () => ({
+      query: ({page}) => ({
         url: `${TRANSACTIONS_URL}/paycheck`,
+        params: {
+          page,
+        },
       }),
       keepUnusedDataFor: 5,
     }),
