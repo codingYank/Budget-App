@@ -80,6 +80,7 @@ const DashboardScreen = () => {
           show={setShowAddCategory}
           refetchCategories={refetchCategories}
           refetchUser={refetchUser}
+          refetchTrans={refetchRecentTransactions}
         />
       ) : null}
       {showAddTransaction ? (

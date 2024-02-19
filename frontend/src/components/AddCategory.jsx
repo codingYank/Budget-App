@@ -5,7 +5,7 @@ import { Field, Form, Formik } from "formik"
 import { useCreateCategoryMutation } from "../slices/categoriesApiSlice"
 import { toast } from "react-toastify"
 
-const AddCategory = ({ show, refetchCategories, refetchUser }) => {
+const AddCategory = ({ show, refetchCategories, refetchUser, refetchTrans }) => {
   const close = () => {
     show(false)
   }
@@ -24,6 +24,7 @@ const AddCategory = ({ show, refetchCategories, refetchUser }) => {
       close()
       refetchCategories()
       refetchUser()
+      refetchTrans()
     } catch (err) {
       console.log(err)
       toast.error(err?.data?.message || err.error)

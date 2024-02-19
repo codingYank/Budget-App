@@ -1,5 +1,6 @@
 import asyncHandler from "../middleware/asyncHandler.js"
 import Category from "../models/category.js"
+import Transaction from "../models/transaction.js"
 import User from "../models/user.js"
 
 const getUserCategories = asyncHandler(async (req, res) => {
@@ -35,6 +36,18 @@ const createCategory = asyncHandler(async (req, res) => {
     color,
     user: user._id,
   })
+
+  if (total > 0) {
+    await Transaction.create({
+      name: 'initial amount',
+      value: total,
+      category: category._id,
+      date: Date.now(),
+      user: user._id,
+      categoryTotal: total,
+      userTotal: user.totalAvailable
+    })
+  }
 
   if (category) {
     res.status(201).json(category)
